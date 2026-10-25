@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="hero">
+    <view class="course-name">{{courseName || '课程详情'}}</view>
+  </view>
+
+  <t-cell-group class="card">
+    <t-cell title="教室" note="{{place || '暂无'}}" bordered />
+    <t-cell title="节数" note="{{unitText || '暂无'}}" bordered />
+    <t-cell title="时间" note="{{timeLabel || '暂无'}}" bordered />
+    <t-cell title="教师" note="{{teacher || '暂无'}}" />
+  </t-cell-group>
+
+  <t-cell class="students-card" title="同学" note="{{studentCount ? studentCount + '人' : '0人'}}" right-icon="{{showStudents ? 'chevron-up' : 'chevron-down'}}" aria-role="button" aria-label="{{showStudents ? '收起同学名单' : '展开同学名单'}}" bind:click="toggleStudents" />
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+  <view wx:if="{{studentsLoading}}" class="status">
+    <t-loading loading theme="circular" size="40rpx" text="正在加载同学名单..." />
+  </view>
+  <view wx:if="{{studentsError}}" class="status">
+    <t-empty icon="error-circle" description="{{studentsError}}" />
+  </view>
+
+  <t-cell-group wx:if="{{showStudents && students.length}}" class="list-card">
+    <block wx:for="{{students}}" wx:key="index">
+      <t-cell title="{{item.name}}" description="{{item.code}}" bordered />
+    </block>
+  </t-cell-group>
+</view>

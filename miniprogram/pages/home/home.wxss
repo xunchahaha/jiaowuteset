@@ -1,0 +1,33 @@
+/* 六个入口保持相同层级，不使用原生 button 的平台默认宽度。 */
+.notification-card { width: 100%; max-width: 540rpx; box-sizing: border-box; padding: 28rpx 24rpx; text-align: center; background: var(--surface); border: 1rpx solid var(--line); border-radius: 18rpx; }
+.notification-card-title { color: var(--brand); font-size: 29rpx; font-weight: 600; }
+.notification-card-desc { margin-top: 8rpx; color: var(--muted); font-size: 23rpx; }
+.page {
+  min-height: 100vh;
+  padding: 0 32rpx 32rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+.welcome { padding: 40rpx 4rpx 36rpx; }
+.announcement { display: flex; align-items: center; gap: 16rpx; margin-top: 20rpx; padding: 22rpx 20rpx; border: 1rpx solid var(--line); border-radius: 12rpx; background: var(--surface); }
+.announcement-label { color: var(--brand); font-size: 23rpx; font-weight: 600; flex-shrink: 0; padding-right: 16rpx; border-right: 1rpx solid var(--line); }
+.announcement-title { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-size: 25rpx; }
+.announcement-arrow { flex-shrink: 0; color: var(--muted); }
+.welcome-text { color: var(--ink); font-size: 42rpx; font-weight: 600; line-height: 1.4; word-break: break-all; }
+.welcome-sub { margin-top: 12rpx; color: var(--muted); font-size: 25rpx; line-height: 1.6; }
+.offline-banner { display: flex; align-items: flex-start; gap: 12rpx; margin-bottom: 24rpx; padding: 20rpx; border: 1rpx solid #eadfc9; border-radius: 14rpx; background: #faf7f0; color: #806333; font-size: 24rpx; line-height: 1.5; }
+.service-grid { display: flex; flex-wrap: wrap; border: 1rpx solid var(--line); border-radius: 18rpx; overflow: hidden; background: var(--surface); }
+.service-entry { width: 50%; min-width: 0; padding: 36rpx 30rpx; box-sizing: border-box; text-align: left; line-height: 1.5; }
+.service-entry:nth-child(odd) { border-right: 1rpx solid var(--line); }
+/* 最后一行只剩一项时独占整行并居中，整行都是点击区域 */
+.service-entry:nth-child(odd):nth-last-child(1) { width: 100%; border-right: none; text-align: center; }
+.service-entry:nth-child(odd):nth-last-child(1) .service-icon { justify-content: center; margin-left: auto; margin-right: auto; }
+/* 除最后一行外都要下边线；偶数项时最后一行是两项，要额外去掉倒数第二项 */
+.service-entry:not(:nth-last-child(1)) { border-bottom: 1rpx solid var(--line); }
+.service-entry:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+.service-icon { display: flex; align-items: center; justify-content: flex-start; width: 46rpx; height: 46rpx; color: var(--brand); margin-bottom: 24rpx; }
+.service-title { color: var(--ink); font-size: 30rpx; font-weight: 600; }
+.service-desc { color: var(--muted); font-size: 23rpx; margin-top: 8rpx; }
+.page-footer { display: flex; flex-direction: column; align-items: center; margin-top: 28rpx; }
+.logout-button { padding: 24rpx 36rpx; color: var(--muted); font-size: 24rpx; line-height: 1.5; border-radius: 12rpx; }
+.entry-pressed { background: #edf2f7; }

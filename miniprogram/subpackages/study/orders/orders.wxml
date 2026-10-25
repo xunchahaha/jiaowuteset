@@ -1,0 +1,110 @@
+<import src="../common/ui.wxml" />
+
+<view class="page no-footer">
+  <!-- 钱包 -->
+  <view class="card wallet">
+    <view class="wallet-top">
+      <view>
+        <view class="wallet-label">可用次数</view>
+        <view class="wallet-num">{{walletLoaded ? available : '–'}}<text class="wallet-unit">次</text></view>
+      </view>
+      <t-button theme="primary" size="medium" bind:tap="onGoSubmit">去刷课</t-button>
+    </view>
+    <view wx:if="{{debt || reserved}}" class="wallet-extra">
+      <text wx:if="{{reserved}}">进行中任务占用 {{reserved}} 次</text>
+      <text wx:if="{{debt}}" class="wallet-debt">答题欠款 {{debt}} 次（充值后自动结清）</text>
+    </view>
+
+    <view class="plans">
+      <view wx:for="{{products}}" wx:key="key" data-key="{{item.key}}" bind:tap="onBuy"
+            class="plan {{item.disabled ? 'off' : ''}}">
+        <view class="plan-credits">{{item.credits}} 次</view>
+        <view class="plan-price">¥<text class="plan-num">{{item.priceText}}</text></view>
+        <view class="plan-unit">{{buying === item.key ? '支付中…' : (item.disabled ? item.disabledText : item.unitText)}}</view>
+      </view>
+    </view>
+
+    <view class="rules-toggle" bind:tap="onToggleRules">
+      <text>计费说明</text>
+      <t-icon name="{{showRules ? 'chevron-up' : 'chevron-down'}}" size="28rpx" />
+    </view>
+    <view wx:if="{{showRules}}" class="rules">
+      <view>· 每门课 1 次，刷完才扣；失败或取消的课不扣。</view>
+      <view>· 开启「自动答题」时，实际答过题的课再多扣 1 次；没有测验的课不多扣。</view>
+      <view>· 开启「自动答题」下单时每门课先预留 2 次，刷完按实际扣，没答题的课退回 1 次。</view>
+      <view>· 自动答题无法保证 100% 正确，整体正确率约 90%。</view>
+    </view>
+  </view>
+
+  <!-- 售后 -->
+  <view class="card service" bind:tap="onContact">
+    <view class="service-main">
+      <view class="service-title">售后与退款</view>
+      <view class="service-desc">刷课失败或取消的课不扣次数；没用完的次数可申请退款。在「充值订单」长按复制订单号，进 QQ 群联系客服处理。</view>
+    </view>
+    <view class="service-btn">联系客服</view>
+  </view>
+
+  <!-- 分段 -->
+  <view class="seg">
+    <view class="seg-item {{tab === 'records' ? 'on' : ''}}" data-tab="records" bind:tap="onSwitchTab">刷课记录</view>
+    <view class="seg-item {{tab === 'orders' ? 'on' : ''}}" data-tab="orders" bind:tap="onSwitchTab">
+      充值订单<text wx:if="{{unpaidCount}}" class="seg-dot">{{unpaidCount}}</text>
+    </view>
+  </view>
+
+  <!-- 刷课记录 -->
+  <block wx:if="{{tab === 'records'}}">
+    <view wx:if="{{recordsNotice}}" class="alert warn">
+      <t-icon name="info-circle" size="32rpx" />
+      <text class="alert-text">{{recordsNotice}}</text>
+    </view>
+    <view wx:if="{{recordsLoading}}" class="card state">
+      <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+    </view>
+    <view wx:elif="{{recordsError}}" class="card state">
+      <t-empty icon="error-circle" description="{{recordsError}}" />
+      <t-button theme="light" size="medium" bind:tap="onRetryRecords">重试</t-button>
+    </view>
+    <view wx:elif="{{!records.length}}" class="card state">
+      <t-empty icon="info-circle" description="还没有刷课记录" />
+      <t-button theme="primary" size="medium" bind:tap="onGoSubmit">去刷第一门课</t-button>
+    </view>
+    <view wx:for="{{records}}" wx:key="taskId" class="card record" data-id="{{item.taskId}}" bind:tap="onOpenRecord">
+      <view class="record-top">
+        <view class="record-name">{{item.name}}</view>
+        <text class="tag tone-{{item.tone}}">{{item.statusText}}</text>
+      </view>
+      <view class="record-bar"><template is="bar" data="{{percent: item.percent, tone: item.tone}}" /></view>
+      <view class="record-meta">
+        <text>{{item.timeText}} · {{item.progressText}}</text>
+        <text>{{item.costText || (item.active ? '查看进度 ›' : '')}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 充值订单 -->
+  <block wx:else>
+    <view wx:if="{{ordersLoading}}" class="card state">
+      <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+    </view>
+    <view wx:elif="{{ordersError}}" class="card state">
+      <t-empty icon="error-circle" description="{{ordersError}}" />
+      <t-button theme="light" size="medium" bind:tap="onRetryOrders">重试</t-button>
+    </view>
+    <view wx:elif="{{!orders.length}}" class="card state">
+      <t-empty icon="info-circle" description="还没有充值订单" />
+    </view>
+    <view wx:else class="card list">
+      <view wx:for="{{orders}}" wx:key="outTradeNo" class="order" data-id="{{item.outTradeNo}}" bind:longpress="onCopyOrder">
+        <view class="order-main">
+          <view class="order-name">{{item.name}} <text class="order-price">¥{{item.priceText}}</text></view>
+          <view class="order-time">{{item.timeText}}</view>
+        </view>
+        <text wx:if="{{item.canRefresh}}" class="link order-action" data-id="{{item.outTradeNo}}" catch:tap="onRefreshOrder">刷新到账</text>
+        <text class="tag tone-{{item.tone}}">{{item.stateText}}</text>
+      </view>
+      <view class="list-foot">长按订单可复制订单号，联系客服售后时提供</view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,58 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-badge">个人档案</view>
+    <view class="hero-name">{{profileName || '我的信息'}}</view>
+    <view class="hero-meta">
+      <text wx:if="{{profileCode}}">学号 {{profileCode}}</text>
+      <text wx:if="{{profileCode && profileDepart}}" class="hero-dot">·</text>
+      <text wx:if="{{profileDepart}}">{{profileDepart}}</text>
+    </view>
+  </view>
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+
+  <view class="content">
+    <view wx:if="{{loading}}" class="state-card state-loading">
+      <t-loading loading theme="circular" size="48rpx" text="正在加载个人信息..." />
+    </view>
+
+    <view wx:if="{{!loading && error}}" class="state-card state-error">
+      <t-empty icon="error-circle" description="{{error}}" />
+      <t-button class="retry-btn" theme="primary" size="small" bind:tap="loadUserDetail">重新加载</t-button>
+    </view>
+
+    <view wx:if="{{!loading && !error && sections.length === 0}}" class="state-card state-empty">
+      <t-empty description="暂无个人信息" />
+    </view>
+
+    <block wx:if="{{!loading && !error && sections.length > 0}}">
+      <block wx:for="{{sections}}" wx:key="title">
+        <view class="section-card">
+          <view class="section-head">
+            <view class="section-title">{{item.title}}</view>
+            <view class="section-line"></view>
+          </view>
+
+          <view wx:if="{{item.type === 'two-list'}}" class="two-column-list">
+            <block wx:for="{{item.rows}}" wx:key="index">
+              <view class="two-column-row">
+                <block wx:for="{{item}}" wx:key="title">
+                  <view class="two-column-item">
+                    <view class="field-label">{{item.title}}</view>
+                    <view class="field-value compact">{{item.content || '暂无'}}</view>
+                  </view>
+                </block>
+              </view>
+            </block>
+          </view>
+
+          <t-cell-group wx:else class="field-list">
+            <block wx:for="{{item.fields}}" wx:key="title">
+              <t-cell title="{{item.title}}" note="{{item.content || '暂无'}}" bordered />
+            </block>
+          </t-cell-group>
+        </view>
+      </block>
+    </block>
+  </view>
+</view>

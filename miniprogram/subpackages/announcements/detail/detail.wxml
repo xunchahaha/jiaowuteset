@@ -1,0 +1,29 @@
+<view class="page">
+  <block wx:if="{{notice}}">
+    <view class="notice-meta">公告 · {{notice.publishedAt}}</view>
+    <view class="notice-title">{{notice.title}}</view>
+    <view class="notice-summary">{{notice.summary}}</view>
+    <view class="notice-body">
+      <view wx:for="{{notice.paragraphs}}" wx:key="*this" class="notice-paragraph">{{item}}</view>
+    </view>
+    <view wx:if="{{notice.contact && qrImage}}" class="group-section">
+      <view class="group-title">{{notice.contact.channel}} · {{notice.contact.name}}</view>
+      <view wx:if="{{notice.contact.copyLabel}}" class="contact-copy">
+        <view class="contact-copy-line">
+          <text class="contact-copy-label">{{notice.contact.copyLabel}}</text>
+          <text class="contact-copy-value" user-select="{{true}}">{{notice.contact.name}}</text>
+        </view>
+        <text class="contact-copy-hint">{{notice.contact.copyHint}}</text>
+      </view>
+      <view class="group-instructions">{{notice.contact.instructions}}</view>
+      <view wx:if="{{imageError}}" class="image-error">二维码加载失败，请重新进入公告。</view>
+      <image wx:else class="group-qr" src="{{qrImage}}" mode="widthFix" show-menu-by-longpress="{{true}}" bindtap="previewQr" binderror="onImageError" aria-label="{{notice.contact.label}}" />
+      <view class="image-caption">{{notice.contact.caption}}</view>
+    </view>
+    <view class="notice-footer">感谢你的反馈，一起把教务助手做得更好。</view>
+  </block>
+  <view wx:else class="empty-state">
+    <view class="empty-title">这条公告暂不可用</view>
+    <view class="back-link" bindtap="backHome" aria-role="button">返回首页</view>
+  </view>
+</view>

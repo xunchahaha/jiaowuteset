@@ -1,0 +1,71 @@
+<view class="page">
+  <view class="header">
+    <view class="header-main">
+      <view class="header-copy">
+        <view class="page-title">我的教材</view>
+        <view class="page-subtitle">本学期教材列表</view>
+      </view>
+      <view class="semester-picker" bindtap="toggleSemesterMenu">
+        <text class="semester-picker-text">{{semesters[semesterIndex].label || '选择学期'}}</text>
+        <t-icon class="semester-picker-icon" name="chevron-down" size="28rpx" />
+      </view>
+    </view>
+
+    <view class="dropdown-mask" wx:if="{{showSemesterMenu}}" bindtap="closeSemesterMenu" catchtouchmove="true"></view>
+    <view class="dropdown-menu" wx:if="{{showSemesterMenu}}">
+      <scroll-view scroll-y class="dropdown-scroll">
+        <block wx:for="{{semesters}}" wx:key="id">
+          <view class="dropdown-item {{index === semesterIndex ? 'active' : ''}}" bindtap="onSelectSemester" data-index="{{index}}">
+            {{item.label}}
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+
+  <view class="content">
+    <view wx:if="{{loading}}" class="loading-state">
+      <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+    </view>
+
+    <view wx:if="{{!loading && error}}" class="error-state">
+      <t-empty icon="error-circle" description="{{error}}" />
+      <t-button class="retry-btn" size="small" theme="primary" bind:tap="onRetry">重试</t-button>
+    </view>
+
+    <view wx:if="{{!loading && !error && textbooks.length === 0}}" class="empty-state">
+      <t-empty description="暂无教材信息" />
+    </view>
+
+    <view wx:if="{{!loading && !error && textbooks.length > 0}}" class="textbook-list">
+      <block wx:for="{{textbooks}}" wx:key="id">
+        <view class="textbook-card" bindtap="onOpenTextbookDetail" data-index="{{index}}">
+          <view class="textbook-main">
+            <view class="textbook-title">{{item.name}}</view>
+            <view class="textbook-body">
+              <view class="textbook-course" wx:if="{{item.courseName}}">
+                <t-tag theme="success" variant="light" size="small">课程</t-tag>
+                <text class="course-name">{{item.courseName}}</text>
+              </view>
+              <view class="textbook-row" wx:if="{{item.author}}">
+                <text class="label">作者</text>
+                <text class="value">{{item.author}}</text>
+              </view>
+              <view class="textbook-row" wx:if="{{item.press}}">
+                <text class="label">出版社</text>
+                <text class="value">{{item.press}}</text>
+              </view>
+              <view class="textbook-row" wx:if="{{item.isbn}}">
+                <text class="label">ISBN</text>
+                <text class="value isbn">{{item.isbn}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="textbook-detail-btn" catchtap="onOpenTextbookDetail" data-index="{{index}}">详情</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,141 @@
+<import src="../common/ui.wxml" />
+
+<view class="page {{ready && !noDraft ? '' : 'no-footer'}}">
+  <template is="steps" data="{{step: 3, available}}" />
+
+  <view wx:if="{{!ready}}" class="card state">
+    <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+  </view>
+
+  <view wx:elif="{{noDraft}}" class="card state">
+    <t-empty icon="info-circle" description="没有拿到已选课程，可能页面被系统回收了" />
+    <t-button theme="primary" size="medium" bind:tap="onBack">返回重新选课</t-button>
+  </view>
+
+  <block wx:else>
+    <!-- 订单内容 -->
+    <view class="card">
+      <view class="card-head">
+        <view class="card-title">刷 {{courseCount}} 门课</view>
+        <text class="link" bind:tap="onBack">修改</text>
+      </view>
+      <view wx:for="{{courses}}" wx:key="courseId" wx:if="{{coursesExpanded || index < courseFold}}" class="line">
+        <view class="line-dot"></view>
+        <text class="line-title">{{item.title}}</text>
+        <text wx:if="{{item.needUnlock}}" class="tag tone-warn">需答题</text>
+      </view>
+      <view wx:if="{{courseCount > courseFold}}" class="more" bind:tap="onToggleCourses">
+        <text>{{coursesExpanded ? '收起' : '展开全部 ' + courseCount + ' 门'}}</text>
+        <t-icon name="{{coursesExpanded ? 'chevron-up' : 'chevron-down'}}" size="28rpx" />
+      </view>
+      <view class="kv">
+        <text class="kv-k">学习通账号</text>
+        <text class="kv-v">{{maskedUser || '未填写'}}</text>
+      </view>
+      <view wx:if="{{needPassword}}" class="pwd">
+        <view class="pwd-tip">需要重新输入学习通密码</view>
+        <view class="field">
+          <t-input borderless label="密码" type="password" placeholder="学习通登录密码"
+                   value="{{passwordInput}}" bind:change="onPasswordInput" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 选项 -->
+    <view class="card">
+      <view class="opt">
+        <view class="opt-main">
+          <view class="opt-title">
+            <text>自动答题</text>
+            <text wx:if="{{forceAnswer}}" class="tag tone-warn opt-tag">必须开启</text>
+          </view>
+          <view class="opt-desc">章节测验由题库 + AI 自动作答。开启后每门课先预留 2 次，刷完按实际扣：没有测验或没答题的课只扣 1 次，多的退回。</view>
+          <view class="opt-note">{{answerNotice}}</view>
+        </view>
+        <t-switch value="{{answering}}" bind:change="onToggleAnswer" />
+      </view>
+      <view class="opt-sep"></view>
+      <view class="opt">
+        <view class="opt-main">
+          <view class="opt-title">刷完通知我</view>
+          <view class="opt-desc">完成或失败时发一条微信服务通知</view>
+        </view>
+        <t-switch value="{{notify}}" bind:change="onToggleNotify" />
+      </view>
+    </view>
+
+    <!-- 费用 -->
+    <view class="card">
+      <view class="card-title">费用</view>
+      <view class="bill">
+        <view class="bill-row">
+          <text>刷课 {{courseCount}} 门 × 1 次</text>
+          <text>{{courseCount}} 次</text>
+        </view>
+        <view wx:if="{{answering}}" class="bill-row">
+          <text>自动答题预留（没答题的课退回）</text>
+          <text>{{courseCount}} 次</text>
+        </view>
+        <view wx:if="{{debt}}" class="bill-row danger">
+          <text>之前答题欠款</text>
+          <text>{{debt}} 次</text>
+        </view>
+        <view class="bill-row total">
+          <text>{{estMax > estMin ? '本单预留' : '本单消耗'}}</text>
+          <text>{{estMax}} 次</text>
+        </view>
+        <view class="bill-row muted">
+          <text>当前可用{{reserved ? '（进行中任务占用 ' + reserved + ' 次）' : ''}}</text>
+          <text>{{walletLoaded ? available + ' 次' : '…'}}</text>
+        </view>
+      </view>
+
+      <block wx:if="{{step === 'buy'}}">
+        <view class="pick-title">还差 {{shortfall}} 次，选一个套餐</view>
+        <view class="plans">
+          <view wx:for="{{products}}" wx:key="key" data-key="{{item.key}}" bind:tap="onPickProduct"
+                class="plan {{product.key === item.key ? 'on' : ''}} {{item.disabled ? 'off' : ''}}">
+            <view class="plan-credits">{{item.credits}} 次</view>
+            <view class="plan-price">¥<text class="plan-num">{{item.priceText}}</text></view>
+            <view class="plan-unit">{{item.disabled ? item.disabledText : item.unitText}}</view>
+          </view>
+        </view>
+        <view wx:if="{{times > 1}}" class="hint">一笔只能买一份，共需支付 {{times}} 笔，每笔到账后点按钮继续</view>
+      </block>
+
+      <view wx:if="{{walletError}}" class="alert danger">
+        <t-icon name="error-circle" size="32rpx" />
+        <text class="alert-text">{{walletError}}</text>
+        <text class="alert-action" bind:tap="onRetryWallet">重试</text>
+      </view>
+    </view>
+
+    <view wx:if="{{pending}}" class="alert warn">
+      <t-icon name="time" size="32rpx" />
+      <text class="alert-text">支付已受理，正在等待到账（订单 {{pending.outTradeNo}}），最迟 24 小时内自动补发。</text>
+      <text class="alert-action" bind:tap="onRefreshDelivery">刷新</text>
+    </view>
+
+    <view wx:if="{{error}}" class="alert danger">
+      <t-icon name="error-circle" size="32rpx" />
+      <text class="alert-text">{{error}}</text>
+    </view>
+
+    <view class="rules" bind:tap="onGoMe">计费说明：每门 1 次，答过题的课 +1 次（开启答题先预留、没答题退回），失败的课不扣。可在「我的」查看记录与订单 ›</view>
+  </block>
+
+  <view wx:if="{{ready && !noDraft}}" class="footer">
+    <view class="footer-info">
+      <view class="footer-main">
+        <block wx:if="{{busy}}">{{busyText}}</block>
+        <block wx:elif="{{step === 'buy'}}">合计<text class="em">¥{{product.priceText}}</text></block>
+        <block wx:else>无需支付</block>
+      </view>
+      <view class="footer-sub">{{ctaSub}}</view>
+    </view>
+    <view class="footer-btn">
+      <t-button theme="primary" size="large" block loading="{{busy}}"
+                disabled="{{busy || step === 'blocked'}}" bind:tap="onPrimary">{{busy ? '请稍候' : ctaText}}</t-button>
+    </view>
+  </view>
+</view>

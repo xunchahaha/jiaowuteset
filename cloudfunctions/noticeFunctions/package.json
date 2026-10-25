@@ -1,0 +1,10 @@
+{
+  "name": "noticeFunctions",
+  "version": "1.0.0",
+  "description": "公告下发：小程序读云端公告，改公告不用发版",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0"
+  }
+}

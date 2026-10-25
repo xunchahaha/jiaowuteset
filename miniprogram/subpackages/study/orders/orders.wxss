@@ -1,0 +1,87 @@
+@import "../study.wxss";
+
+/* 钱包 */
+.wallet { padding: 32rpx 28rpx 20rpx; }
+.wallet-top { display: flex; align-items: center; justify-content: space-between; }
+.wallet-label { font-size: 24rpx; color: var(--muted); }
+.wallet-num { font-size: 72rpx; font-weight: 700; color: var(--brand); line-height: 1.15; margin-top: 4rpx; }
+.wallet-unit { font-size: 26rpx; font-weight: 400; margin-left: 6rpx; color: var(--muted); }
+
+.wallet-extra { display: flex; flex-direction: column; font-size: 23rpx; color: var(--muted); margin-top: 10rpx; line-height: 1.6; }
+.wallet-debt { color: var(--danger); }
+
+.plans { display: flex; margin: 28rpx -8rpx 0; }
+
+.plan {
+  flex: 1;
+  margin: 0 8rpx;
+  padding: 22rpx 8rpx;
+  border: 2rpx solid var(--line);
+  border-radius: 16rpx;
+  text-align: center;
+}
+
+.plan:active { border-color: var(--brand); background: var(--td-brand-color-light); }
+.plan.off { opacity: 0.45; }
+.plan-credits { font-size: 26rpx; font-weight: 600; color: var(--ink); }
+.plan-price { font-size: 24rpx; color: var(--brand); margin-top: 8rpx; }
+.plan-num { font-size: 40rpx; font-weight: 700; }
+.plan-unit { font-size: 20rpx; color: var(--muted); margin-top: 4rpx; }
+
+.rules-toggle { display: flex; align-items: center; justify-content: center; margin-top: 20rpx; font-size: 23rpx; color: var(--muted); }
+.rules { margin-top: 12rpx; padding: 18rpx 20rpx; border-radius: 12rpx; background: var(--canvas); font-size: 23rpx; color: var(--muted); line-height: 1.8; }
+
+/* 分段 */
+.seg { display: flex; padding: 6rpx; margin-bottom: 20rpx; border-radius: 16rpx; background: var(--soft); }
+
+.seg-item {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seg-item.on { background: var(--surface); color: var(--ink); font-weight: 600; }
+
+.seg-dot {
+  margin-left: 8rpx;
+  min-width: 30rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  padding: 0 8rpx;
+  border-radius: 999rpx;
+  background: var(--danger);
+  color: #ffffff;
+  font-size: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 刷课记录 */
+.record { padding: 24rpx; margin-bottom: 16rpx; }
+.record-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.record-name { flex: 1; min-width: 0; margin-right: 16rpx; font-size: 28rpx; font-weight: 600; color: var(--ink); line-height: 1.45; }
+.record-bar { margin-top: 16rpx; }
+.record-meta { display: flex; justify-content: space-between; margin-top: 14rpx; font-size: 22rpx; color: var(--muted); }
+
+/* 充值订单 */
+.list { padding: 8rpx 24rpx; }
+.order { display: flex; align-items: center; padding: 22rpx 0; border-bottom: 1rpx solid var(--line); }
+.order-main { flex: 1; min-width: 0; }
+.order-name { font-size: 27rpx; color: var(--ink); }
+.order-price { color: var(--muted); font-size: 24rpx; margin-left: 8rpx; }
+.order-time { font-size: 22rpx; color: var(--muted); margin-top: 4rpx; }
+.order-action { margin-right: 20rpx; font-size: 24rpx; }
+.list-foot { font-size: 22rpx; color: var(--muted); text-align: center; padding: 20rpx 0 12rpx; }
+.order:last-of-type { border-bottom: none; }
+
+/* 售后 */
+.service { display: flex; align-items: center; padding: 24rpx; }
+.service-main { flex: 1; min-width: 0; margin-right: 20rpx; }
+.service-title { font-size: 28rpx; font-weight: 600; color: var(--ink); }
+.service-desc { font-size: 22rpx; color: var(--muted); margin-top: 6rpx; line-height: 1.6; }
+.service-btn { flex-shrink: 0; padding: 12rpx 24rpx; border-radius: 999rpx; background: var(--td-brand-color-light); color: var(--brand); font-size: 24rpx; }

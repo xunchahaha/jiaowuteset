@@ -1,0 +1,219 @@
+.exam-page {
+  min-height: 100vh;
+  background: var(--canvas);
+  padding-bottom: 32rpx;
+}
+
+.exam-toolbar {
+  background: var(--surface);
+  padding: 28rpx 24rpx;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: none;
+  flex-wrap: nowrap;
+  position: relative;
+  z-index: 50;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.exam-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 12rpx;
+}
+
+.exam-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+}
+
+.exam-picker {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  justify-content: space-between;
+  height: 64rpx;
+  padding: 0 20rpx 0 28rpx;
+  border-radius: 14rpx;
+  background: var(--canvas);
+  color: var(--brand);
+  box-sizing: border-box;
+  border: 1rpx solid var(--line);
+}
+
+.exam-picker-text {
+  font-size: 24rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-weight: 600;
+}
+
+.exam-picker-icon {
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+
+.dropdown-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  z-index: 100;
+  box-shadow: none;
+  border-bottom-left-radius: 20rpx;
+  border-bottom-right-radius: 20rpx;
+  padding: 10rpx 0;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-scroll {
+  max-height: 60vh;
+}
+
+.dropdown-item {
+  padding: 24rpx 32rpx;
+  font-size: 26rpx;
+  color: #333333;
+  border-bottom: 1rpx solid #f0f0f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item.active {
+  color: var(--brand);
+  background: #edf3fa;
+  font-weight: 500;
+}
+
+.exam-status {
+  text-align: center;
+  padding: 60rpx;
+  color: var(--muted);
+  font-size: 28rpx;
+}
+
+.exam-group {
+  margin-top: 24rpx;
+}
+
+.exam-group-title {
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  color: #5b667a;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.exam-card {
+  background: #ffffff;
+  margin: 0 24rpx 16rpx;
+  padding: 28rpx;
+  border-radius: 20rpx;
+  box-shadow: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-left: 1rpx solid var(--line);
+  border: 1rpx solid var(--line);
+}
+
+.exam-left {
+  flex: 1;
+  padding-right: 20rpx;
+  min-width: 0;
+}
+
+.exam-right {
+  text-align: right;
+  min-width: 0;
+  max-width: 46%;
+  flex-shrink: 0;
+}
+
+.exam-card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+  word-break: break-all;
+}
+
+.exam-card-seat {
+  font-size: 24rpx;
+  background: #edf3fa;
+  color: var(--brand);
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.exam-card-type {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.exam-card-time {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--brand);
+  margin-bottom: 4rpx;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+.exam-card-place {
+  font-size: 24rpx;
+  color: var(--ink);
+  font-weight: 500;
+  display: block;
+  word-break: break-all;
+}
+
+.cache-banner {
+  margin: 20rpx 32rpx 0;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "studyTaskFunctions",
+  "version": "1.0.0",
+  "description": "刷课任务代理（转发到自建服务器）+ 订阅消息通知",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0"
+  }
+}

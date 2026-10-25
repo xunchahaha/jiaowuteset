@@ -1,0 +1,122 @@
+@import "../study.wxss";
+
+/* 进行中任务横幅 */
+.running {
+  display: flex;
+  align-items: center;
+  padding: 22rpx 24rpx;
+  margin-bottom: 24rpx;
+  border-radius: 16rpx;
+  background: var(--td-brand-color-light);
+  color: var(--brand);
+  font-size: 26rpx;
+}
+
+.running-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: var(--brand);
+  margin-right: 16rpx;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.running-text { flex: 1; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* 已登录账号行 */
+.account-row { display: flex; align-items: center; padding: 24rpx; }
+
+.account-badge {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: var(--ok-bg);
+  color: var(--ok);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 18rpx;
+  flex-shrink: 0;
+}
+
+.account-main { flex: 1; min-width: 0; }
+.account-title { font-size: 28rpx; color: var(--ink); font-weight: 600; }
+.account-desc { font-size: 22rpx; color: var(--muted); margin-top: 4rpx; }
+.link.gap { margin-left: 28rpx; }
+
+/* 表单 */
+.eye { padding: 0 4rpx 0 16rpx; color: var(--muted); }
+
+.remember { display: flex; align-items: center; justify-content: space-between; margin: 8rpx 4rpx 28rpx; }
+.remember-text { display: flex; align-items: center; font-size: 24rpx; color: var(--muted); }
+.remember-text text { margin-left: 8rpx; }
+
+/* 读取中 */
+.scan { margin-top: 24rpx; text-align: center; }
+.scan-track { height: 8rpx; border-radius: 999rpx; background: var(--soft); overflow: hidden; }
+
+.scan-runner {
+  width: 40%;
+  height: 100%;
+  border-radius: 999rpx;
+  background: var(--brand);
+  animation: slide 1.2s ease-in-out infinite;
+}
+
+@keyframes slide {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(260%); }
+}
+
+.scan-text { font-size: 24rpx; color: var(--ink); margin-top: 14rpx; }
+.scan-soft { font-size: 22rpx; color: var(--muted); margin-top: 6rpx; }
+
+.restore {
+  margin-top: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  color: var(--brand);
+}
+
+.restore text { margin-left: 8rpx; }
+
+/* 课程 */
+.course {
+  display: flex;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 2rpx solid var(--line);
+  border-radius: 18rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.course.on { border-color: var(--brand); background: var(--td-brand-color-light); }
+
+.check {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 3rpx solid #c3ceda;
+  margin: 2rpx 20rpx 0 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.check.on { background: var(--brand); border-color: var(--brand); }
+
+.course-main { flex: 1; min-width: 0; }
+.course-title { font-size: 28rpx; color: var(--ink); font-weight: 500; line-height: 1.45; }
+.course-meta { font-size: 23rpx; color: var(--muted); margin-top: 6rpx; }
+.course-tag { margin-top: 12rpx; }

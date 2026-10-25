@@ -1,0 +1,56 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">{{roomName || '教室课表'}}</view>
+  </view>
+
+  <view class="toolbar">
+    <view class="nav-btn" bindtap="prevWeek">上一周</view>
+    <view class="toolbar-week">{{weekLabel}}</view>
+    <view class="nav-btn" bindtap="nextWeek">下一周</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="status">
+    <t-loading loading theme="circular" size="40rpx" text="正在加载教室课表..." />
+  </view>
+  <view wx:if="{{!loading && error}}" class="status">
+    <t-empty icon="error-circle" description="{{error}}" />
+  </view>
+  <view wx:if="{{!loading && !error && dayColumns.length === 0}}" class="status">
+    <t-empty description="当前周暂无课表安排" />
+  </view>
+
+  <view wx:if="{{!loading && dayColumns.length > 0}}" class="grid">
+    <view class="header-row">
+      <view class="time-header">时间</view>
+      <block wx:for="{{weekDays}}" wx:key="date">
+        <view class="day-header">
+          <view class="day-name">{{item.name}}</view>
+          <view class="day-date">{{item.dateShort}}</view>
+        </view>
+      </block>
+    </view>
+
+    <view class="grid-body">
+      <view class="time-column">
+        <block wx:for="{{timeSlots}}" wx:key="unit">
+          <view class="time-slot">{{item.label}}</view>
+        </block>
+      </view>
+      <view class="days-columns">
+        <block wx:for="{{dayColumns}}" wx:for-item="day" wx:for-index="dayIndex" wx:key="date">
+          <view class="day-column" style="height: {{gridHeight}}rpx;">
+            <block wx:for="{{timeSlots}}" wx:key="unit">
+              <view class="slot-line"></view>
+            </block>
+            <block wx:for="{{day.lessons}}" wx:for-item="lesson" wx:for-index="lessonIndex" wx:key="id">
+              <view class="lesson-block color-{{lesson.colorIndex}}" style="top: {{lesson.top}}rpx; height: {{lesson.height}}rpx;" bindtap="onTapLesson" data-day-index="{{dayIndex}}" data-lesson-index="{{lessonIndex}}">
+                <view class="lesson-name">{{lesson.courseName}}</view>
+                <view class="lesson-meta">{{lesson.meta}}</view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

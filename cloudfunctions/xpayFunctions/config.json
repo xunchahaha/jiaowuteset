@@ -1,0 +1,8 @@
+{
+  "triggers": [
+    { "name": "xpayReconcileDaily", "type": "timer", "config": "0 30 3 * * * *" }
+  ],
+  "permissions": {
+    "openapi": []
+  }
+}

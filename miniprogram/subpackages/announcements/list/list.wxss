@@ -1,0 +1,12 @@
+.page { min-height: 100vh; box-sizing: border-box; padding: 32rpx; padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
+.intro-title { color: var(--ink); font-size: 40rpx; font-weight: 600; }
+.intro-desc { color: var(--muted); font-size: 24rpx; margin: 10rpx 0 30rpx; }
+.notice-card { margin-bottom: 22rpx; padding: 26rpx; background: var(--surface); border: 1rpx solid var(--line); border-radius: 18rpx; }
+.notice-pinned { border-color: #cdddee; }
+.notice-meta { display: flex; align-items: center; gap: 14rpx; color: var(--muted); font-size: 22rpx; }
+.pinned-label { padding: 3rpx 12rpx; border-radius: 6rpx; color: var(--brand); background: #edf3fa; font-size: 21rpx; }
+.notice-heading { display: flex; align-items: center; gap: 18rpx; margin-top: 16rpx; }
+.notice-title { flex: 1; min-width: 0; color: var(--ink); font-size: 30rpx; font-weight: 600; line-height: 1.5; }
+.notice-arrow { flex-shrink: 0; color: var(--muted); font-size: 34rpx; }
+.notice-summary { margin-top: 12rpx; color: var(--muted); font-size: 25rpx; line-height: 1.7; }
+.notice-pressed { background: #f0f5fa; }

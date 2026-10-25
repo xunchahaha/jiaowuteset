@@ -1,0 +1,144 @@
+/* 成绩页面样式 - 数据可视化 */
+.page {
+  min-height: 100vh;
+  background: var(--canvas);
+  padding-bottom: 32rpx;
+}
+
+.summary {
+  background: var(--surface);
+  padding: 32rpx 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: none;
+  margin: 0 32rpx 8rpx;
+  border: 1rpx solid var(--line);
+  border-radius: 16rpx;
+}
+
+.summary-item {
+  text-align: center;
+  color: var(--ink);
+  flex: 1;
+}
+
+.summary-value {
+  font-size: 52rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+  text-shadow: none;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  opacity: 0.95;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.cache-banner {
+  margin: 20rpx 32rpx 0;
+}
+
+.biz-switch {
+  margin: 20rpx 32rpx 0;
+}
+
+.biz-picker {
+  min-height: 84rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 18rpx;
+  background: #ffffff;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--brand);
+  border: 1rpx solid var(--line);
+}
+
+.biz-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.biz-label {
+  font-size: 22rpx;
+  color: var(--muted);
+  margin-bottom: 6rpx;
+}
+
+.biz-value {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.state-panel {
+  padding: 80rpx 32rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.semester-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 28rpx 32rpx 16rpx;
+  background: var(--canvas);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.lesson-group {
+  display: block;
+  margin: 0 32rpx 16rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: none;
+  border: 1rpx solid var(--line);
+}
+
+.score-note {
+  display: flex;
+  align-items: center;
+}
+
+.exam-grades {
+  background: #f8f9fc;
+  margin: 0;
+  padding: 24rpx 32rpx;
+  border-radius: 0;
+  border: none;
+  border-top: none;
+}
+
+.exam-grade {
+  font-size: 26rpx;
+  color: #5b667a;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  line-height: 1.6;
+}
+
+.exam-grade:last-child {
+  margin-bottom: 0;
+}
+
+.exam-type {
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 8rpx;
+}
+
+.exam-grade .red {
+  color: #f56c6c;
+  font-weight: 600;
+}
+
+.summary-item + .summary-item { border-left: 1rpx solid var(--line); }

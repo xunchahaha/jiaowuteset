@@ -1,0 +1,10 @@
+{
+  "triggers": [
+    { "name": "studyTaskEveryMinute", "type": "timer", "config": "0 * * * * * *" }
+  ],
+  "permissions": {
+    "openapi": [
+      "subscribeMessage.send"
+    ]
+  }
+}

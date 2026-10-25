@@ -1,0 +1,34 @@
+.notification-center { padding: 0 28rpx 36rpx; padding-bottom: calc(36rpx + env(safe-area-inset-bottom)); }
+.intro { padding: 30rpx 4rpx; }
+.title { font-size: 42rpx; font-weight: 600; color: var(--ink); }
+.subtitle { margin-top: 8rpx; font-size: 24rpx; color: var(--muted); }
+.card { background: var(--surface); border: 1rpx solid var(--line); border-radius: 22rpx; padding: 28rpx; margin-bottom: 24rpx; }
+.section-title { font-size: 29rpx; font-weight: 600; color: var(--ink); }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; min-height: 76rpx; }
+.setting-row switch { flex-shrink: 0; }
+.muted { color: var(--muted); font-size: 23rpx; line-height: 1.65; }
+.divider { border-top: 1rpx solid var(--line); padding-top: 18rpx; margin-top: 20rpx; font-size: 26rpx; }
+.link { color: var(--brand); }
+.quota-card { text-align: center; }
+.quota { color: var(--brand); font-size: 86rpx; line-height: 1.4; font-weight: 600; margin: 12rpx 0; }
+.quota-unit { font-size: 27rpx; color: var(--muted); margin-left: 10rpx; font-weight: 400; }
+.quota-note { font-size: 21rpx; color: var(--muted); margin-bottom: 24rpx; }
+.pending-status { margin: 14rpx 0; color: var(--brand); font-size: 22rpx; line-height: 1.6; }
+.notification-center button { width: 100%; min-height: 76rpx; height: auto; margin: 0; padding: 14rpx 20rpx; border-radius: 14rpx; font-size: 26rpx; line-height: 1.6; font-weight: 500; box-sizing: border-box; }
+.notification-center .primary-button { background: var(--brand); color: #fff; }
+.notification-center .secondary-button { background: #edf3fa; color: var(--brand); margin-top: 22rpx; }
+.explanation { margin-top: 18rpx; color: var(--muted); font-size: 22rpx; line-height: 1.65; text-align: left; }
+.button-row { display: flex; gap: 20rpx; margin-top: 24rpx; }
+.notification-center .small-button { background: #f7f9fb; border: 1rpx solid var(--line); color: var(--ink); min-height: 66rpx; font-size: 24rpx; }
+.sync-summary { margin: 18rpx 0 8rpx; font-size: 27rpx; }
+.sync-error { margin: 16rpx 0; color: #a34e3e; font-size: 23rpx; line-height: 1.6; }
+.record { padding: 20rpx 0; border-bottom: 1rpx solid var(--line); }
+.record:last-child { border-bottom: 0; padding-bottom: 0; }
+.record-head { display: flex; justify-content: space-between; gap: 20rpx; font-size: 26rpx; }
+.record-state { flex-shrink: 0; color: var(--brand); font-size: 22rpx; }
+.empty-record { margin-top: 20rpx; }
+.notification-center .tool-button { text-align: left; padding: 24rpx 0 8rpx; color: var(--brand); font-weight: 400; }
+.notification-center button[disabled] { opacity: .5; }
+.error-card { padding: 24rpx; margin-bottom: 24rpx; background: #faf7f0; color: #806333; border-radius: 16rpx; font-size: 25rpx; }
+.error-card button { margin-top: 18rpx; }
+.loading-text { color: var(--muted); text-align: center; padding: 20rpx; font-size: 24rpx; }

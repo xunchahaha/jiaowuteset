@@ -1,0 +1,63 @@
+@import "../study.wxss";
+
+.tone-text-brand { color: var(--brand); }
+.tone-text-ok { color: var(--ok); }
+.tone-text-warn { color: var(--warn); }
+.tone-text-danger { color: var(--danger); }
+.tone-text-muted { color: var(--muted); }
+
+/* 总览 */
+.hero-card { padding: 32rpx 28rpx; }
+.hero-top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24rpx; }
+.hero-title { font-size: 40rpx; font-weight: 700; color: var(--ink); }
+.hero-sub { font-size: 24rpx; color: var(--muted); margin-top: 8rpx; line-height: 1.5; max-width: 460rpx; }
+.hero-percent { font-size: 64rpx; font-weight: 700; line-height: 1; }
+.hero-pct { font-size: 28rpx; margin-left: 4rpx; }
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18rpx;
+  font-size: 24rpx;
+  color: var(--muted);
+}
+
+.hero-cost {
+  margin-top: 20rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx dashed var(--line);
+  font-size: 26rpx;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* 课程卡 */
+.course { padding: 24rpx; margin-bottom: 16rpx; }
+.course-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.course-title { flex: 1; min-width: 0; margin-right: 16rpx; font-size: 28rpx; font-weight: 600; color: var(--ink); line-height: 1.45; }
+.course-bar { display: flex; align-items: center; margin-top: 16rpx; }
+.course-bar-main { flex: 1; }
+.course-bar-text { font-size: 22rpx; color: var(--muted); margin-left: 16rpx; min-width: 88rpx; text-align: right; }
+
+/* 在跑章节 */
+.act { margin-top: 16rpx; padding: 16rpx 18rpx; border-radius: 12rpx; background: var(--canvas); }
+.act-head { display: flex; align-items: center; }
+.act-kind { font-size: 20rpx; padding: 2rpx 10rpx; border-radius: 6rpx; margin-right: 12rpx; flex-shrink: 0; }
+
+.act-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 24rpx;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.act-detail { display: flex; align-items: center; margin-top: 10rpx; font-size: 22rpx; color: var(--muted); }
+.act-bar { flex: 1; margin-left: 16rpx; }
+.act-more { font-size: 22rpx; color: var(--muted); margin-top: 12rpx; }
+
+.course-note { font-size: 22rpx; color: var(--brand); margin-top: 12rpx; }
+.course-error { font-size: 22rpx; color: var(--danger); margin-top: 12rpx; line-height: 1.5; word-break: break-all; }

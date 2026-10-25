@@ -1,0 +1,32 @@
+<!-- 刷课分包公共模板 -->
+
+<!-- 下单三步：data="{{ step: 1|2|3, available }}" -->
+<template name="steps">
+  <view class="steps-bar">
+    <view class="steps">
+      <view class="step {{step > 1 ? 'done' : (step === 1 ? 'on' : '')}}">
+        <view class="step-dot"><text>{{step > 1 ? '✓' : '1'}}</text></view>
+        <text class="step-text">登录</text>
+      </view>
+      <view class="step-line {{step > 1 ? 'on' : ''}}"></view>
+      <view class="step {{step > 2 ? 'done' : (step === 2 ? 'on' : '')}}">
+        <view class="step-dot"><text>{{step > 2 ? '✓' : '2'}}</text></view>
+        <text class="step-text">选课</text>
+      </view>
+      <view class="step-line {{step > 2 ? 'on' : ''}}"></view>
+      <view class="step {{step === 3 ? 'on' : ''}}">
+        <view class="step-dot"><text>3</text></view>
+        <text class="step-text">下单</text>
+      </view>
+    </view>
+    <view class="wallet-chip" bind:tap="onGoMe">
+      <text class="wallet-chip-num">{{available}}</text>
+      <text class="wallet-chip-unit">次可用</text>
+    </view>
+  </view>
+</template>
+
+<!-- 进度条：data="{{ percent, tone }}" -->
+<template name="bar">
+  <view class="bar"><view class="bar-fill tone-bg-{{tone || 'brand'}}" style="width: {{percent}}%"></view></view>
+</template>

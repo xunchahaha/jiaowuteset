@@ -1,0 +1,59 @@
+/* Shared campus palette. Semantic success / warning / error colors remain distinct. */
+page {
+  --brand: #376da6;
+  --ink: #24354b;
+  --muted: #69798b;
+  --line: #e4eaf0;
+  --canvas: #f7f9fb;
+  --surface: #ffffff;
+  --td-brand-color: #376da6;
+  --td-brand-color-active: #2a5685;
+  --td-brand-color-light: #edf3fa;
+  --td-brand-color-light-active: #dce8f5;
+  --td-brand-color-disabled: #a6bdd6;
+  --td-text-color-primary: #24354b;
+  --td-text-color-secondary: #69798b;
+  --td-text-color-placeholder: #778696;
+  --td-bg-color-page: #f7f9fb;
+  --td-bg-color-container: #ffffff;
+  --td-component-stroke: #e4eaf0;
+  --td-button-border-radius: 14rpx;
+  --td-radius-default: 12rpx;
+  --td-radius-large: 16rpx;
+  --td-radius-extraLarge: 20rpx;
+  --td-cell-title-font: 400 28rpx / 1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --td-cell-description-font: 400 24rpx / 1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --td-cell-note-font-size: 26rpx;
+  --td-cell-vertical-padding: 30rpx;
+  --td-cell-border-color: #e4eaf0;
+  --td-cell-note-color: #536478;
+  --td-input-bg-color: #f7f9fb;
+  --td-input-border-color: #e4eaf0;
+  --td-input-vertical-padding: 26rpx;
+  --td-input-placeholder-text-color: #778696;
+  --td-search-bg-color: #f0f4f8;
+  --td-tag-success-color: #397560;
+  --td-tag-success-light-color: #eef6f1;
+  --td-notice-bar-border-radius: 12rpx;
+  --td-notice-bar-warning-color: #806333;
+  --td-notice-bar-warning-bg-color: #faf7f0;
+  background: var(--canvas);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+.container { display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+button { background: initial; }
+button::after { border: none; }
+.text-center { text-align: center; }
+.text-primary { color: var(--brand); }
+.text-secondary { color: var(--muted); }
+.text-danger { color: #b84c4c; }
+.text-success { color: #397560; }
+.shadow-sm, .shadow-md, .shadow-lg { box-shadow: 0 2rpx 8rpx rgba(36, 53, 75, 0.03); }
+.page-intro { padding: 36rpx 32rpx 24rpx; }
+.page-intro-title { font-size: 40rpx; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.page-intro-desc { margin-top: 10rpx; color: var(--muted); font-size: 24rpx; }

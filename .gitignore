@@ -1,0 +1,51 @@
+api-output/
+miniprogram/node_modules/
+output/playwright/
+outputs/wakeup/
+agent-workspace/
+
+# 本地开发配置
+.claude/
+project.private.config.json
+
+# 开源仅作源码展示：真实项目配置、部署文档和本地运维资料保留在本机
+project.config.json
+**/DEPLOYMENT.md
+**/DEPLOY_*.md
+hh/
+miniprogram/utils/api.js
+miniprogram/utils/notification-config.js
+miniprogram/utils/payment-config.js
+miniprogram/utils/task-config.js
+cloudfunctions/scheduleReminderFunctions/settings.js
+cloudfunctions/studyTaskFunctions/settings.js
+scripts/lib/wx-cloud.js
+scripts/study-dashboard.*
+scripts/notice-admin.js
+scripts/xpay-admin.js
+
+# 本地运维脚本、网页研究缓存和分享卡预览
+outputs/add-credits.js
+outputs/query-openid.js
+outputs/send-credit-notice.js
+outputs/ipresearch/
+outputs/share-card-preview/
+outputs/devtools-automation/node_modules/
+
+# 含真实支付响应，仅供本地回归测试
+tests/xpay-functions.test.js
+
+/chaoxing/
+
+# 含真实密钥（AppKey / offerId）的对接文档，勿提交
+刷课接入待办.md
+刷课引擎改造实施计划.md
+
+# 预览二维码（含临时令牌）
+preview-qr.png
+
+# 云函数本地配置（含服务器地址与 HMAC 密钥）
+cloudfunctions/*/settings.local.js
+
+# 编辑器残留日志
+Typora_Hook_Log.txt

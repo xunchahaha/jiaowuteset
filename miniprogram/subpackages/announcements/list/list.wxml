@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="intro-title">公告与更新</view>
+  <view class="intro-desc">功能更新、使用说明与反馈交流。</view>
+  <view wx:for="{{notices}}" wx:key="id" class="notice-card {{item.pinned ? 'notice-pinned' : ''}}" hover-class="notice-pressed" bindtap="openNotice" data-id="{{item.id}}" aria-role="button" aria-label="{{item.title}}">
+    <view class="notice-meta"><text wx:if="{{item.pinned}}" class="pinned-label">置顶</text><text>{{item.publishedAt}}</text></view>
+    <view class="notice-heading"><view class="notice-title">{{item.title}}</view><text class="notice-arrow">›</text></view>
+    <view class="notice-summary">{{item.summary}}</view>
+  </view>
+</view>

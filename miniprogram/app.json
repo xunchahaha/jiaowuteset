@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/home/home",
+    "pages/my/my",
+    "pages/classroom/classroom",
+    "pages/classroom-detail/classroom-detail",
+    "pages/lesson-detail/lesson-detail",
+    "pages/grades/grades",
+    "pages/schedule/schedule",
+    "pages/exam/exam",
+    "pages/admission-query/admission-query",
+    "pages/textbook/textbook",
+    "pages/textbook-detail/textbook-detail"
+  ],
+  "subPackages": [
+    { "root": "subpackages/notifications", "name": "notifications", "pages": ["center/center"] },
+    {
+      "root": "subpackages/announcements",
+      "name": "announcements",
+      "pages": ["list/list", "detail/detail"]
+    },
+    {
+      "root": "subpackages/study",
+      "name": "study",
+      "pages": ["submit/submit", "confirm/confirm", "orders/orders", "progress/progress"]
+    }
+  ],
+  "window": {
+    "backgroundColor": "#F7F9FB",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F7F9FB",
+    "navigationBarTitleText": "教务助手",
+    "navigationBarTextStyle": "black"
+  },
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+    "t-empty": "tdesign-miniprogram/empty/empty",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-input": "tdesign-miniprogram/input/input",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-notice-bar": "tdesign-miniprogram/notice-bar/notice-bar",
+    "t-search": "tdesign-miniprogram/search/search",
+    "t-switch": "tdesign-miniprogram/switch/switch",
+    "t-tag": "tdesign-miniprogram/tag/tag"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

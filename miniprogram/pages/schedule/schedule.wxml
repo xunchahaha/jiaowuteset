@@ -1,0 +1,64 @@
+<view class="page">
+  <view class="toolbar">
+    <view class="nav-btn" bindtap="prevWeek">上一周</view>
+    <view class="week">{{weekLabel}}</view>
+    <view class="nav-btn" bindtap="nextWeek">下一周</view>
+  </view>
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+  <view wx:if="{{loading}}" class="status">
+    <t-loading loading theme="circular" size="40rpx" text="加载中..." />
+  </view>
+  <view wx:if="{{!loading && error}}" class="status">
+    <t-empty icon="error-circle" description="{{error}}" />
+  </view>
+
+  <view class="grid">
+    <view class="header-row">
+      <view class="time-header">时间</view>
+      <block wx:for="{{weekDays}}" wx:for-item="day" wx:key="date">
+        <view class="day-header">
+          <view class="day-name">{{day.name}}</view>
+          <view class="day-date">{{day.dateShort}}</view>
+        </view>
+      </block>
+    </view>
+
+    <view class="grid-body">
+      <view class="time-column">
+        <block wx:for="{{timeSlots}}" wx:for-item="slot" wx:key="unit">
+          <view class="time-slot">{{slot.label}}</view>
+        </block>
+      </view>
+      <view class="days-columns">
+        <block wx:for="{{dayColumns}}" wx:for-item="day" wx:for-index="dayIndex" wx:key="date">
+          <view class="day-column" style="height: {{gridHeight}}rpx;">
+            <block wx:for="{{timeSlots}}" wx:for-item="slot" wx:key="unit">
+              <view class="slot-line"></view>
+            </block>
+            <block wx:for="{{day.lessons}}" wx:for-item="lesson" wx:for-index="lessonIndex" wx:key="id">
+              <view class="lesson-block color-{{lesson.colorIndex}} {{lesson.height >= 220 ? 'lesson-roomy' : ''}}" style="top: {{lesson.top}}rpx; height: {{lesson.height}}rpx;" bindtap="onTapLesson" data-day-index="{{dayIndex}}" data-lesson-index="{{lessonIndex}}">
+                <view class="lesson-name">{{lesson.courseName}}</view>
+                <view class="lesson-meta">{{lesson.meta}}</view>
+                <view wx:if="{{lesson.teacher}}" class="lesson-teacher">{{lesson.teacher}}</view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{extraLessons.length}}" class="extra">
+    <view class="extra-title">未分组课程</view>
+    <t-cell-group class="extra-list">
+      <block wx:for="{{extraLessons}}" wx:for-item="lesson" wx:key="id">
+        <t-cell title="{{lesson.courseName}}" description="{{lesson.meta}}" arrow bordered bind:click="onTapExtraLesson" data-lesson-index="{{index}}" />
+      </block>
+    </t-cell-group>
+  </view>
+  <view class="schedule-actions">
+    <button class="schedule-more" bindtap="openNotifications">课前提醒</button>
+    <button class="schedule-more" bindtap="onScheduleMore" disabled="{{exportingWakeup}}" aria-label="更多课表操作">更多 ···</button>
+  </view>
+</view>

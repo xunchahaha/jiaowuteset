@@ -1,0 +1,58 @@
+.page {
+  min-height: 100vh;
+  background: var(--canvas);
+  padding-bottom: 24rpx;
+}
+
+.hero {
+  padding: 32rpx 28rpx 12rpx;
+  background: var(--canvas);
+}
+
+.course-name {
+  color: var(--ink);
+  font-size: 38rpx;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.card,
+.students-card,
+.list-card {
+  margin: 20rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 18rpx;
+  box-shadow: none;
+  border: 1rpx solid var(--line);
+}
+
+.card {
+  display: block;
+  overflow: hidden;
+}
+
+.students-card {
+  display: block;
+  overflow: hidden;
+}
+
+.status {
+  margin: 16rpx 24rpx 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 24rpx;
+}
+
+.status.error {
+  color: #f56c6c;
+}
+
+.list-card {
+  display: block;
+  overflow: hidden;
+}
+
+.cache-banner {
+  margin: 20rpx 32rpx 0;
+}

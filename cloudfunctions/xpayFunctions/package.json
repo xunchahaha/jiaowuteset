@@ -1,0 +1,10 @@
+{
+  "name": "xpayFunctions",
+  "version": "1.0.0",
+  "description": "虚拟支付：下单签名 / 发货推送 / 查单兜底 / 次数账本",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "~2.4.0"
+  }
+}

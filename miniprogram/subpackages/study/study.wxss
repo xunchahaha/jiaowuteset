@@ -1,0 +1,148 @@
+/* 刷课分包公共样式：四个页面共用（步骤条、卡片、标签、提示条、进度条、底栏） */
+page {
+  --ok: #397560;
+  --ok-bg: #eef6f1;
+  --warn: #9a5b00;
+  --warn-bg: #fff6e5;
+  --danger: #b4372f;
+  --danger-bg: #fdf0ef;
+  --soft: #f0f4f8;
+}
+
+.page { padding: 24rpx 24rpx 200rpx; }
+.page.no-footer { padding-bottom: 48rpx; }
+
+/* ---------- 步骤条 ---------- */
+.steps-bar {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1rpx solid var(--line);
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.steps { flex: 1; display: flex; align-items: center; margin-right: 20rpx; }
+.step { display: flex; align-items: center; color: var(--muted); flex-shrink: 0; }
+
+.step-dot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 2rpx solid #c3ceda;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.step-text { font-size: 24rpx; margin-left: 10rpx; }
+.step.on { color: var(--brand); font-weight: 600; }
+.step.on .step-dot { background: var(--brand); border-color: var(--brand); color: #ffffff; }
+.step.done { color: var(--brand); }
+.step.done .step-dot { border-color: var(--brand); }
+.step-line { flex: 1; height: 2rpx; background: var(--line); margin: 0 12rpx; }
+.step-line.on { background: var(--brand); }
+
+.wallet-chip {
+  display: flex;
+  align-items: baseline;
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+  background: var(--td-brand-color-light);
+  color: var(--brand);
+}
+
+.wallet-chip-num { font-size: 30rpx; font-weight: 700; }
+.wallet-chip-unit { font-size: 20rpx; margin-left: 4rpx; }
+
+/* ---------- 卡片 ---------- */
+.card {
+  background: var(--surface);
+  border: 1rpx solid var(--line);
+  border-radius: 20rpx;
+  padding: 28rpx 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20rpx; }
+.card-title { font-size: 30rpx; font-weight: 600; color: var(--ink); }
+.card-desc { font-size: 24rpx; color: var(--muted); margin-top: 6rpx; line-height: 1.5; }
+.link { font-size: 26rpx; color: var(--brand); flex-shrink: 0; }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; margin: 8rpx 8rpx 16rpx; }
+.section-title { font-size: 28rpx; font-weight: 600; color: var(--ink); }
+.section-note { font-size: 22rpx; color: var(--muted); }
+
+.state { padding: 64rpx 24rpx; display: flex; flex-direction: column; align-items: center; }
+
+/* ---------- 标签 / 配色 ---------- */
+.tag { display: inline-block; font-size: 22rpx; padding: 4rpx 14rpx; border-radius: 8rpx; flex-shrink: 0; }
+.tone-brand { color: var(--brand); background: var(--td-brand-color-light); }
+.tone-ok { color: var(--ok); background: var(--ok-bg); }
+.tone-warn { color: var(--warn); background: var(--warn-bg); }
+.tone-danger { color: var(--danger); background: var(--danger-bg); }
+.tone-muted { color: var(--muted); background: var(--soft); }
+
+/* ---------- 进度条 ---------- */
+.bar { height: 10rpx; border-radius: 999rpx; background: var(--soft); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 999rpx; transition: width 0.4s ease; }
+.tone-bg-brand { background: var(--brand); }
+.tone-bg-ok { background: var(--ok); }
+.tone-bg-warn { background: #d8952c; }
+.tone-bg-danger { background: var(--danger); }
+.tone-bg-muted { background: #b7c2ce; }
+
+/* ---------- 提示条 ---------- */
+.alert {
+  display: flex;
+  align-items: flex-start;
+  padding: 20rpx;
+  border-radius: 14rpx;
+  margin-bottom: 24rpx;
+  font-size: 24rpx;
+  line-height: 1.55;
+}
+
+.card .alert { margin: 20rpx 0 0; }
+.alert-text { flex: 1; margin-left: 12rpx; }
+.alert-action { margin-left: 16rpx; font-weight: 600; flex-shrink: 0; }
+.alert.danger { background: var(--danger-bg); color: var(--danger); }
+.alert.warn { background: var(--warn-bg); color: var(--warn); }
+.alert.info { background: var(--td-brand-color-light); color: var(--brand); }
+.alert.ok { background: var(--ok-bg); color: var(--ok); }
+
+/* ---------- 表单 ---------- */
+.field {
+  border-radius: 14rpx;
+  background: var(--canvas);
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  --td-input-bg-color: var(--canvas);
+}
+
+/* ---------- 底栏 ---------- */
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1rpx solid var(--line);
+  z-index: 10;
+}
+
+.footer-info { flex: 1; min-width: 0; margin-right: 20rpx; }
+.footer-main { font-size: 28rpx; color: var(--ink); }
+.footer-main .em { font-size: 36rpx; font-weight: 700; color: var(--brand); margin: 0 4rpx; }
+.footer-sub { font-size: 22rpx; color: var(--muted); margin-top: 4rpx; }
+.footer-sub.warn { color: var(--warn); }
+.footer-btn { flex-shrink: 0; min-width: 260rpx; }
+.footer-btns { flex: 1; display: flex; }
+.footer-btns .footer-btn-item { flex: 1; }
+.footer-btns .footer-btn-item + .footer-btn-item { margin-left: 20rpx; }

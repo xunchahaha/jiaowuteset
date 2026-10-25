@@ -1,0 +1,177 @@
+.page {
+  min-height: 100vh;
+  background: var(--canvas);
+}
+
+.hero {
+  padding: 36rpx 32rpx;
+  color: var(--ink);
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 0;
+  border-radius: 999rpx;
+  background: transparent;
+  font-size: 24rpx;
+  letter-spacing: 1rpx;
+  margin-bottom: 14rpx;
+  color: var(--muted);
+}
+
+.hero-name {
+  font-size: 44rpx;
+  font-weight: 600;
+  line-height: 1.2;
+  word-break: break-all;
+}
+
+.hero-meta {
+  margin-top: 14rpx;
+  font-size: 24rpx;
+  opacity: 0.92;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  color: var(--muted);
+}
+
+.hero-dot {
+  margin: 0 12rpx;
+}
+
+.cache-banner {
+  margin: 0 24rpx 20rpx;
+}
+
+.content {
+  padding: 0 24rpx 36rpx;
+}
+
+.state-card,
+.section-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16rpx;
+  box-shadow: none;
+  border: 1rpx solid var(--line);
+}
+
+.state-card {
+  padding: 80rpx 32rpx;
+  text-align: center;
+  color: #64748b;
+}
+
+.state-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12rpx;
+}
+
+.state-desc {
+  display: block;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.retry-btn {
+  margin-top: 28rpx;
+}
+
+.section-card {
+  padding: 28rpx 24rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid var(--line);
+  border-radius: 16rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  flex-shrink: 0;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #0f172a;
+  margin-right: 18rpx;
+}
+
+.section-line {
+  height: 1rpx;
+  flex: 1;
+  background: var(--line);
+}
+
+.field-list {
+  display: block;
+  overflow: hidden;
+  border-radius: 18rpx;
+}
+
+.field-label {
+  font-size: 22rpx;
+  color: #64748b;
+  margin-bottom: 10rpx;
+}
+
+.field-value {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #1e293b;
+  word-break: break-all;
+}
+
+.field-value.compact {
+  font-size: 26rpx;
+}
+
+.two-column-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.two-column-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.two-column-item {
+  flex: 1;
+  min-height: 132rpx;
+  padding: 22rpx 20rpx;
+  border-radius: 12rpx;
+  background: var(--canvas);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.state-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(15, 118, 110, 0.14);
+  border-top-color: #0f766e;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
