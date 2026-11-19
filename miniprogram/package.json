@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build:ui": "node ../scripts/build-ui-package.js",
+    "check:ui": "node ../scripts/build-ui-package.js --check"
+  },
+  "dependencies": {
+    "tdesign-miniprogram": "^1.15.2"
+  }
+}

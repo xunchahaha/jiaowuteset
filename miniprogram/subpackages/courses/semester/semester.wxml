@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="header">
+    <view class="title">{{semesterLabel || '本学期'}}全部课程</view>
+    <view class="subtitle" wx:if="{{total}}">共 {{total}} 门 · 考核方式取自培养方案</view>
+    <view class="filters" wx:if="{{total}}">
+      <block wx:for="{{filters}}" wx:key="key">
+        <view class="filter {{item.key === filter ? 'active' : ''}} tone-{{item.key}}" bindtap="onFilter" data-key="{{item.key}}" aria-role="button">
+          {{item.label}} <text class="filter-count">{{item.count}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+  <view wx:if="{{loading}}" class="status">
+    <t-loading loading theme="circular" size="44rpx" text="加载中..." />
+  </view>
+  <view wx:if="{{!loading && error}}" class="status">
+    <t-empty icon="error-circle" description="{{error}}" />
+  </view>
+  <view wx:if="{{!loading && !error && !total}}" class="status">
+    <t-empty description="这个学期还没有课程" />
+  </view>
+  <view wx:if="{{!loading && !error && total && !planLoaded}}" class="hint">培养方案暂时没查到，考试 / 考查标注稍后再看</view>
+
+  <view class="list">
+    <block wx:for="{{visibleCourses}}" wx:for-item="course" wx:key="id">
+      <view class="card" bindtap="onTapCourse" data-index="{{index}}">
+        <view class="card-head">
+          <view class="card-title">{{course.courseName}}</view>
+          <view wx:if="{{course.tagText}}" class="tag tag-{{course.tagTone}}">{{course.tagText}}</view>
+        </view>
+        <view class="card-meta">
+          <text wx:if="{{course.teacher}}">{{course.teacher}}</text>
+          <text wx:if="{{course.credits}}"> · {{course.credits}} 学分</text>
+          <text wx:if="{{!course.arranged}}"> · 无固定排课{{course.weekText ? ' · ' + course.weekText : ''}}</text>
+        </view>
+        <view wx:for="{{course.arrangements}}" wx:for-item="line" wx:key="*this" class="card-line">{{line}}</view>
+        <view wx:if="{{course.planGroup}}" class="card-group">{{course.planGroup}}</view>
+      </view>
+    </block>
+  </view>
+</view>

@@ -1,0 +1,136 @@
+<view class="page no-footer invite">
+  <view wx:if="{{loading}}" class="card state">
+    <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+  </view>
+
+  <view wx:elif="{{error}}" class="card state">
+    <t-empty icon="error-circle" description="{{error}}" />
+    <t-button theme="light" size="medium" bind:tap="onRetry">重试</t-button>
+  </view>
+
+  <!-- 好友点开分享卡片进来：帮 TA 助力 -->
+  <block wx:elif="{{mode === 'visit'}}">
+    <view class="hero">
+      <view class="hero-eyebrow">好友助力</view>
+      <view class="hero-title">你的好友正在领刷课次数</view>
+      <view class="hero-desc">登录学习通、查看一下自己的课程，就能帮 TA 领 {{v.reward}} 次刷课次数，不用付费</view>
+      <view class="help-steps">
+        <view class="help-step">
+          <view class="help-num">1</view>
+          <text>点下方按钮</text>
+        </view>
+        <view class="help-arrow">›</view>
+        <view class="help-step">
+          <view class="help-num">2</view>
+          <text>登录学习通</text>
+        </view>
+        <view class="help-arrow">›</view>
+        <view class="help-step">
+          <view class="help-num">3</view>
+          <text>读取课程</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{visitText}}" class="card visit-result">
+      <t-icon name="info-circle" size="40rpx" />
+      <text class="visit-result-text">{{visitText}}</text>
+    </view>
+    <view wx:else class="cta-wrap">
+      <t-button theme="primary" block size="large" class="cta" loading="{{accepting}}" disabled="{{accepting}}" bind:tap="onAccept">
+        {{visitBound ? '继续去登录学习通' : '帮 TA 助力'}}
+      </t-button>
+      <view class="cta-note">只有第一次使用刷课的同学能助力，每人只能助力一次</view>
+    </view>
+
+    <view class="card me-too" bind:tap="onSwitchMine">
+      <view class="me-too-icon"><t-icon name="gift" size="40rpx" /></view>
+      <view class="me-too-main">
+        <view class="me-too-title">我也要领刷课次数</view>
+        <view class="me-too-desc">邀请好友助力，每人最多领 {{v.maxRewards}} 次</view>
+      </view>
+      <t-icon name="chevron-right" size="32rpx" />
+    </view>
+  </block>
+
+  <!-- 我的活动 -->
+  <block wx:else>
+    <view wx:if="{{notice}}" class="alert warn">
+      <t-icon name="info-circle" size="32rpx" />
+      <text class="alert-text">{{notice}}</text>
+    </view>
+
+    <view class="hero">
+      <view class="hero-eyebrow">{{v.active ? '限时活动' : (v.orderOpen ? '活动已结束' : '活动暂停')}}</view>
+      <view class="hero-title">{{v.title}}</view>
+      <view class="hero-desc">{{v.desc}}</view>
+
+      <view class="slots">
+        <view wx:for="{{v.slots}}" wx:key="index" class="slot {{item.filled ? 'on' : ''}}">
+          <view class="slot-circle">
+            <t-icon wx:if="{{item.filled}}" name="check" size="44rpx" />
+            <text wx:else class="slot-q">?</text>
+          </view>
+          <view class="slot-label">{{item.filled ? '已到账' : '待助力'}}</view>
+          <view class="slot-reward">{{item.label}}</view>
+        </view>
+      </view>
+
+      <view class="meter">
+        <view class="meter-text">
+          <text>已领 <text class="meter-num">{{v.rewarded}}</text> / {{v.maxRewards}} 次</text>
+          <text wx:if="{{v.full}}" class="meter-hint">已领满</text>
+          <text wx:elif="{{v.active}}" class="meter-hint">再邀请 {{v.needMore}} 位好友领满</text>
+        </view>
+        <view class="meter-track"><view class="meter-fill" style="width: {{v.percent}}%"></view></view>
+      </view>
+
+      <button wx:if="{{v.active && !v.full}}" class="share-btn" open-type="share">
+        <t-icon name="share" size="36rpx" />
+        <text>邀请好友助力</text>
+      </button>
+      <view wx:elif="{{v.full}}" class="share-btn done" bind:tap="onGoStudy">次数已到账，去刷课</view>
+      <view wx:else class="share-btn off">{{v.orderOpen ? '活动已结束' : '刷课暂停接单，活动暂停'}}</view>
+    </view>
+
+    <view class="section-head">
+      <view class="section-title">助力好友</view>
+      <text class="section-note">{{v.helpers.length ? '共 ' + v.helpers.length + ' 位' : ''}}</text>
+    </view>
+    <view wx:if="{{!v.helpers.length}}" class="card empty-helpers">
+      <view class="empty-title">还没有好友助力</view>
+      <view class="empty-desc">把活动分享到班级群、宿舍群，好友点开后登录学习通查看课程，就算助力成功</view>
+    </view>
+    <view wx:else class="card list">
+      <view wx:for="{{v.helpers}}" wx:key="key" class="helper">
+        <view class="helper-avatar tone-{{item.tone}}"><t-icon name="user" size="32rpx" /></view>
+        <view class="helper-main">
+          <view class="helper-name">好友 {{v.helpers.length - index}}</view>
+          <view class="helper-time">{{item.time}}</view>
+        </view>
+        <text class="tag tone-{{item.tone}}">{{item.text}}</text>
+      </view>
+    </view>
+
+    <view class="section-head"><view class="section-title">怎么领</view></view>
+    <view class="card how">
+      <view class="how-step">
+        <view class="how-num">1</view>
+        <view class="how-text">点「邀请好友助力」，分享给好友或发到群里</view>
+      </view>
+      <view class="how-step">
+        <view class="how-num">2</view>
+        <view class="how-text">好友点开卡片，登录学习通并读到自己的课程</view>
+      </view>
+      <view class="how-step">
+        <view class="how-num">3</view>
+        <view class="how-text">助力成功，你立刻到账 {{v.reward}} 次刷课次数</view>
+      </view>
+    </view>
+
+    <view class="section-head"><view class="section-title">活动规则</view></view>
+    <view class="card rules">
+      <view wx:for="{{v.rules}}" wx:key="index" class="rule">{{index + 1}}. {{item}}</view>
+    </view>
+  </block>
+</view>

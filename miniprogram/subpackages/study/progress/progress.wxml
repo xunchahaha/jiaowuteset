@@ -1,0 +1,97 @@
+<import src="../common/ui.wxml" />
+
+<view class="page">
+  <view wx:if="{{notice}}" class="alert warn">
+    <t-icon name="info-circle" size="32rpx" />
+    <text class="alert-text">{{notice}}</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="card state">
+    <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+  </view>
+
+  <view wx:elif="{{error}}" class="card state">
+    <t-empty icon="error-circle" description="{{error}}" />
+    <t-button theme="light" size="medium" bind:tap="onRetry">重试</t-button>
+  </view>
+
+  <block wx:else>
+    <!-- 总览 -->
+    <view class="card hero-card">
+      <view class="hero-top">
+        <view>
+          <view class="hero-title">{{t.headline}}</view>
+          <view class="hero-sub">{{t.subline}}</view>
+        </view>
+        <view class="hero-percent tone-text-{{t.tone}}">{{t.percent}}<text class="hero-pct">%</text></view>
+      </view>
+      <template is="bar" data="{{percent: t.percent, tone: t.tone}}" />
+      <view class="hero-meta">
+        <text>共 {{t.total}} 门 · 完成 {{t.done}}{{t.failed ? ' · 失败 ' + t.failed : ''}}</text>
+        <text wx:if="{{t.useTiku}}" class="tag tone-brand">自动答题</text>
+      </view>
+      <view wx:if="{{t.costText}}" class="hero-cost">{{t.costText}}</view>
+    </view>
+
+    <!-- 暂停 -->
+    <view wx:if="{{t.isPaused}}" class="alert warn">
+      <t-icon name="info-circle" size="32rpx" />
+      <text wx:if="{{t.useTiku}}" class="alert-text">这单的答题量超出了单门上限，已暂停以免多扣。已刷的部分都保留，请联系开发者处理。</text>
+      <text wx:elif="{{tikuBalance > 0}}" class="alert-text">题库次数用完已暂停，题库还剩 {{tikuBalance}} 题，可以接着刷。</text>
+      <text wx:else class="alert-text">题库次数用完已暂停，已刷的部分都保留。</text>
+      <text wx:if="{{!t.useTiku && tikuBalance > 0}}" class="alert-action" bind:tap="onResume">{{resuming ? '续跑中' : '继续刷'}}</text>
+    </view>
+
+    <!-- 课程 -->
+    <view class="section-head">
+      <view class="section-title">课程进度</view>
+      <text class="section-note">{{t.isTerminal ? '' : '每 4 秒自动刷新'}}</text>
+    </view>
+
+    <view wx:for="{{t.courses}}" wx:key="key" wx:for-item="c" class="card course">
+      <view class="course-top">
+        <view class="course-title">{{c.title}}</view>
+        <text class="tag tone-{{c.tone}}">{{c.statusText}}</text>
+      </view>
+      <view class="course-bar">
+        <view class="course-bar-main"><template is="bar" data="{{percent: c.percent, tone: c.tone}}" /></view>
+        <text class="course-bar-text">{{c.progressText || c.percent + '%'}}</text>
+      </view>
+
+      <view wx:for="{{c.actives}}" wx:key="key" wx:for-item="a" class="act">
+        <view class="act-head">
+          <text class="act-kind tone-{{a.kind === 'work' ? 'warn' : 'brand'}}">{{a.kind === 'work' ? '测验' : (a.kind === 'video' ? '视频' : '章节')}}</text>
+          <text class="act-title">{{a.title}}</text>
+        </view>
+        <view class="act-detail">
+          <text>{{a.detail}}</text>
+          <view wx:if="{{a.percent >= 0}}" class="act-bar"><template is="bar" data="{{percent: a.percent, tone: 'brand'}}" /></view>
+        </view>
+      </view>
+      <view wx:if="{{c.activesMore}}" class="act-more">还有 {{c.activesMore}} 个章节同时在刷</view>
+
+      <view wx:if="{{c.answered && t.useTiku}}" class="course-note">已自动答题</view>
+      <view wx:if="{{c.error}}" class="course-error">{{c.error}}</view>
+    </view>
+  </block>
+
+  <view wx:if="{{t}}" class="footer">
+    <view wx:if="{{t.canCancel}}" class="footer-btns">
+      <view class="footer-btn-item">
+        <t-button theme="light" size="large" block bind:tap="onGoMe">我的记录</t-button>
+      </view>
+      <view class="footer-btn-item">
+        <t-button theme="danger" variant="outline" size="large" block loading="{{canceling}}"
+                  disabled="{{canceling}}" bind:tap="onCancel">{{canceling ? '正在取消' : '取消任务'}}</t-button>
+      </view>
+    </view>
+    <view wx:else class="footer-btns">
+      <view class="footer-btn-item">
+        <t-button theme="light" size="large" block bind:tap="onGoMe">我的记录</t-button>
+      </view>
+      <view class="footer-btn-item">
+        <t-button theme="primary" size="large" block bind:tap="onGoSubmit">再刷一批</t-button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,59 @@
+<view class="page">
+  <view wx:if="{{notice}}" class="announcement" hover-class="entry-pressed" bindtap="openNotice" aria-role="button" aria-label="{{'查看公告：' + notice.title}}">
+    <text class="announcement-label">公告</text>
+    <text class="announcement-title">{{notice.title}}</text>
+    <t-icon class="announcement-arrow" name="chevron-right" size="28rpx" />
+  </view>
+  <view class="welcome">
+    <view class="welcome-text">你好{{displayName ? '，' + displayName : ''}}</view>
+    <view class="welcome-sub">教务信息，一处查看。</view>
+  </view>
+  <view wx:if="{{offlineMode}}" class="offline-banner" hover-class="entry-pressed" bindtap="retryOnline" aria-role="button" aria-label="离线模式，点此重新连接教务">
+    <t-icon name="info-circle" size="30rpx" />
+    <text>当前为离线模式，显示的是之前打开过的页面缓存。点此重新连接教务</text>
+  </view>
+  <view class="service-grid">
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goGrades" aria-role="button" aria-label="成绩查询">
+      <view class="service-icon"><t-icon name="chart-bar" size="46rpx" /></view>
+      <view class="service-title">成绩查询</view>
+      <view class="service-desc">学期成绩与绩点</view>
+    </view>
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goSchedule" aria-role="button" aria-label="课程表">
+      <view class="service-icon"><t-icon name="calendar" size="46rpx" /></view>
+      <view class="service-title">课程表</view>
+      <view class="service-desc">查看每周课程</view>
+    </view>
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goExam" aria-role="button" aria-label="考试安排">
+      <view class="service-icon"><t-icon name="edit" size="46rpx" /></view>
+      <view class="service-title">考试安排</view>
+      <view class="service-desc">考试时间与地点</view>
+    </view>
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goTextbook" aria-role="button" aria-label="我的教材">
+      <view class="service-icon"><t-icon name="book-open" size="46rpx" /></view>
+      <view class="service-title">我的教材</view>
+      <view class="service-desc">课程用书与详情</view>
+    </view>
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goClassroom" aria-role="button" aria-label="全校教室">
+      <view class="service-icon"><t-icon name="building" size="46rpx" /></view>
+      <view class="service-title">全校教室</view>
+      <view class="service-desc">课表与空闲查询</view>
+    </view>
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goStudy" aria-role="button" aria-label="刷课服务">
+      <view class="service-icon"><t-icon name="{{studyLocked ? 'lock-on' : 'play-circle'}}" size="46rpx" /></view>
+      <view class="service-title">刷课服务</view>
+      <view class="service-desc">{{studyLocked ? '维护中' : (studyCredits > 0 ? '剩余 ' + studyCredits + ' 次' : '代刷学习通课程')}}</view>
+    </view>
+    <view class="service-entry" hover-class="entry-pressed" bindtap="goMy" aria-role="button" aria-label="个人信息">
+      <view class="service-icon"><t-icon name="user" size="46rpx" /></view>
+      <view class="service-title">个人信息</view>
+      <view class="service-desc">查看学籍资料</view>
+    </view>
+  </view>
+  <view class="page-footer">
+    <view class="notification-card" hover-class="entry-pressed" bindtap="goNotifications" aria-role="button" aria-label="通知中心，管理课前提醒">
+      <view class="notification-card-title">通知中心</view>
+      <view class="notification-card-desc">课前提醒 · 增加通知次数</view>
+    </view>
+    <view class="logout-button" hover-class="entry-pressed" bindtap="onLogout" aria-role="button" aria-label="退出登录">退出登录</view>
+  </view>
+</view>

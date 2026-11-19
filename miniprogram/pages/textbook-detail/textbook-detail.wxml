@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">{{detail.name || '教材详情'}}</view>
+    <view class="hero-course" wx:if="{{detail.courseName}}">{{detail.courseName}}</view>
+  </view>
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+  <view wx:if="{{loading}}" class="state-card">
+    <t-loading loading theme="circular" size="48rpx" text="加载中..." />
+  </view>
+
+  <view wx:if="{{!loading && error}}" class="state-card error-card">
+    <t-empty icon="error-circle" description="{{error}}" />
+  </view>
+
+  <view wx:if="{{!loading && infoRows.length}}" class="section">
+    <view class="section-title">{{sectionTitle || '教材基本信息'}}</view>
+    <t-cell-group class="info-card">
+      <block wx:for="{{infoRows}}" wx:key="label">
+        <t-cell title="{{item.label}}" note="{{item.value || '-'}}" bordered arrow bind:click="onCopyValue" data-label="{{item.label}}" data-value="{{item.value}}" />
+      </block>
+    </t-cell-group>
+  </view>
+
+  <view wx:if="{{!loading && !error && !infoRows.length}}" class="state-card">
+    <t-empty description="暂无教材详情" />
+  </view>
+</view>

@@ -1,0 +1,50 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">全校教室课表查询</view>
+    <view class="hero-subtitle">支持教室搜索，也可以按日期和节次查询空教室</view>
+  </view>
+
+  <view class="filter-card">
+    <view class="field">
+      <view class="field-label">筛选教室</view>
+      <t-search class="keyword-input" placeholder="输入教室名称或编号，例如 C-401" value="{{roomKeyword}}" action="搜索" shape="round" clearable disabled="{{loading}}" bind:change="onRoomKeywordInput" bind:submit="onSearchRoomCandidates" bind:action-click="onSearchRoomCandidates" />
+    </view>
+    <view class="free-room-panel">
+      <view class="free-room-title">按时间段查空教室</view>
+      <view class="free-room-controls">
+        <picker class="free-room-picker" mode="date" value="{{freeRoomDate}}" bindchange="onFreeRoomDateChange">
+          <view class="picker-label">日期</view>
+          <view class="picker-value">{{freeRoomDate}}</view>
+        </picker>
+        <picker class="free-room-picker" mode="selector" range="{{unitOptions}}" value="{{freeStartUnitIndex}}" bindchange="onFreeStartUnitChange">
+          <view class="picker-label">开始</view>
+          <view class="picker-value">{{unitOptions[freeStartUnitIndex]}}</view>
+        </picker>
+        <picker class="free-room-picker" mode="selector" range="{{unitOptions}}" value="{{freeEndUnitIndex}}" bindchange="onFreeEndUnitChange">
+          <view class="picker-label">结束</view>
+          <view class="picker-value">{{unitOptions[freeEndUnitIndex]}}</view>
+        </picker>
+      </view>
+      <t-button block class="free-room-btn" theme="primary" loading="{{loading && roomListMode === 'free'}}" disabled="{{loading}}" bind:tap="onSearchFreeRooms">查询空教室</t-button>
+      <view class="free-room-tip">上方教室关键词可作为筛选条件，不填则查全部教室。</view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="state-card">
+    <t-loading loading theme="circular" size="44rpx" text="{{roomListMode === 'free' ? '正在查询空教室...' : '正在搜索教室...'}}" />
+  </view>
+  <view wx:if="{{!loading && error}}" class="state-card">
+    <t-empty icon="error-circle" description="{{error}}" />
+  </view>
+  <scroll-view wx:if="{{roomCandidates.length > 0}}" class="candidate-card" scroll-y lower-threshold="60" bindscrolltolower="onRoomListScrollToLower">
+    <view class="candidate-title">{{roomListTitle}}</view>
+    <view wx:if="{{freeRoomSummary}}" class="free-room-summary">{{freeRoomSummary}}</view>
+    <t-cell-group class="candidate-list">
+      <block wx:for="{{roomCandidates}}" wx:key="id">
+        <t-cell title="{{item.roomName}}" description="{{item.campusName}}{{item.buildingName ? ' / ' + item.buildingName : ''}}{{item.floor ? ' / ' + item.floor + '层' : ''}}{{item.typeName ? ' / ' + item.typeName : ''}}{{item.capacity ? ' / 容量' + item.capacity : ''}}" arrow bordered bind:click="onSelectRoomCandidate" data-index="{{index}}" />
+      </block>
+    </t-cell-group>
+    <view wx:if="{{roomLoadingMore}}" class="candidate-more">正在加载更多教室...</view>
+    <view wx:if="{{!roomLoadingMore && !roomHasMore}}" class="candidate-more">已经到底了</view>
+  </scroll-view>
+</view>

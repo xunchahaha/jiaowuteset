@@ -1,0 +1,26 @@
+.page { min-height: 100vh; background: var(--canvas); padding-bottom: calc(32rpx + env(safe-area-inset-bottom)); }
+.header { background: var(--surface); padding: 28rpx 24rpx 20rpx; border-bottom: 1rpx solid var(--line); }
+.title { font-size: 32rpx; font-weight: 600; color: var(--ink); }
+.subtitle { margin-top: 6rpx; font-size: 23rpx; color: var(--muted); }
+.filters { display: flex; flex-wrap: wrap; gap: 14rpx; margin-top: 20rpx; }
+.filter { height: 56rpx; line-height: 56rpx; padding: 0 22rpx; border-radius: 28rpx; font-size: 24rpx; color: var(--muted); background: var(--canvas); border: 1rpx solid var(--line); }
+.filter-count { margin-left: 4rpx; font-weight: 600; }
+.filter.active { color: #ffffff; background: var(--brand); border-color: var(--brand); }
+.filter.active.tone-exam { background: #c4553f; border-color: #c4553f; }
+.filter.active.tone-check { background: #2f8a63; border-color: #2f8a63; }
+.filter.active.tone-elective { background: #6b7c90; border-color: #6b7c90; }
+.cache-banner { display: block; margin: 20rpx 24rpx 0; }
+.status { padding: 80rpx 0; }
+.hint { margin: 20rpx 24rpx 0; font-size: 23rpx; color: var(--muted); }
+.list { padding: 8rpx 24rpx 0; }
+.card { margin-top: 18rpx; padding: 24rpx; background: var(--surface); border: 1rpx solid var(--line); border-radius: 16rpx; }
+.card-head { display: flex; align-items: flex-start; gap: 16rpx; }
+.card-title { flex: 1; min-width: 0; font-size: 29rpx; font-weight: 600; color: var(--ink); line-height: 1.4; }
+.tag { flex-shrink: 0; height: 40rpx; line-height: 40rpx; padding: 0 14rpx; border-radius: 8rpx; font-size: 22rpx; font-weight: 600; }
+.tag-exam { color: #b24631; background: #fbece8; }
+.tag-check { color: #24774f; background: #e7f4ed; }
+.tag-other { color: #8a6116; background: #fbf2df; }
+.tag-elective { color: #5c6c80; background: #eef1f5; }
+.card-meta { margin-top: 10rpx; font-size: 24rpx; color: var(--muted); }
+.card-line { margin-top: 8rpx; font-size: 24rpx; color: #536478; line-height: 1.5; }
+.card-group { margin-top: 12rpx; font-size: 22rpx; color: #8794a3; }

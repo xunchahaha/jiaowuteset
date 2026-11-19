@@ -1,0 +1,56 @@
+<view class="exam-page">
+  <view class="exam-toolbar">
+    <view class="exam-title">考试安排</view>
+    <view class="exam-actions">
+      <view class="exam-picker" bindtap="toggleSemesterMenu">
+        <text class="exam-picker-text">{{examSemesterLabel}}</text>
+        <t-icon class="exam-picker-icon" name="chevron-down" size="28rpx" />
+      </view>
+
+      <view class="dropdown-mask" wx:if="{{showSemesterMenu}}" bindtap="closeSemesterMenu" catchtouchmove="true"></view>
+      <view class="dropdown-menu" wx:if="{{showSemesterMenu}}">
+        <scroll-view scroll-y class="dropdown-scroll">
+          <block wx:for="{{examSemesterOptions}}" wx:key="id">
+            <view class="dropdown-item {{index === examSemesterIndex ? 'active' : ''}}" bindtap="onSelectSemester" data-index="{{index}}">
+              {{item.label}}
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+
+  <t-notice-bar wx:if="{{showCacheBanner}}" class="cache-banner" theme="warning" content="{{cacheNotice}}" />
+  <view wx:if="{{examLoading}}" class="exam-status">
+    <t-loading loading theme="circular" size="44rpx" text="加载中..." />
+  </view>
+  <view wx:if="{{!examLoading && examError}}" class="exam-status">
+    <t-empty icon="error-circle" description="{{examError}}" />
+  </view>
+  <view wx:if="{{!examLoading && !examError && examGroups.length === 0}}" class="exam-status">
+    <t-empty description="暂无考试安排" />
+  </view>
+
+  <block wx:for="{{examGroups}}" wx:for-item="group" wx:key="date">
+    <view class="exam-group">
+      <view class="exam-group-title">{{group.dateLabel}}</view>
+      <block wx:for="{{group.items}}" wx:for-item="exam" wx:key="id">
+        <view class="exam-card">
+          <view class="exam-left">
+            <view class="exam-card-title">
+              {{exam.courseName}}
+              <t-tag wx:if="{{exam.status === 'finished'}}" theme="default" variant="light" size="small">已考完</t-tag>
+              <t-tag wx:if="{{exam.status === 'ongoing'}}" theme="warning" variant="light" size="small">进行中</t-tag>
+            </view>
+            <view wx:if="{{exam.seat}}" class="exam-card-seat">座位：{{exam.seat}}</view>
+            <view wx:if="{{exam.examTypeName}}" class="exam-card-type">{{exam.examTypeName}}</view>
+          </view>
+          <view class="exam-right">
+            <view wx:if="{{exam.timeText}}" class="exam-card-time">{{exam.timeText}}</view>
+            <text wx:if="{{exam.place}}" class="exam-card-place">{{exam.place}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </block>
+</view>

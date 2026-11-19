@@ -1,0 +1,34 @@
+<view class="notification-center">
+  <view class="intro"><view class="title">通知中心</view><view class="subtitle">{{permissionText}}</view></view>
+  <view wx:if="{{error}}" class="error-card"><view>{{error}}</view><button class="small-button" bindtap="retryAutoSync">重新连接</button></view>
+  <view class="card settings-card">
+    <view class="setting-row"><view><view class="section-title">课前提醒</view><view class="muted">{{syncingSchedule ? '正在自动准备课表' : (enabled ? '已开启云端课前提醒' : '课前提醒已关闭')}}</view></view><switch checked="{{enabled}}" disabled="{{busy || subscribing || syncingSubscriptions || syncingSchedule || !ready}}" color="#376da6" bindchange="onToggle" /></view>
+    <picker range="{{leadOptions}}" value="{{leadIndex}}" disabled="{{busy || subscribing || syncingSubscriptions || syncingSchedule || !ready}}" bindchange="onLeadChange"><view class="setting-row divider"><text>提前提醒时间</text><text class="link">{{leadMinutes}} 分钟　›</text></view></picker>
+  </view>
+  <view class="card quota-card">
+    <view class="muted">预计可用通知次数</view>
+    <view class="quota">{{ready ? estimatedCredits : '—'}}<text class="quota-unit">次</text></view>
+    <view class="quota-note">按本应用订阅与发送记录估算 · 记录上限 {{creditLimit}}</view>
+    <button class="primary-button" bindtap="onAddSubscription" loading="{{subscribing}}" disabled="{{busy || subscribing || !ready}}">{{subscribing ? '等待微信确认' : '＋ 增加通知次数'}}</button>
+    <view wx:if="{{pendingCount}}" class="pending-status">已同意 {{pendingCount}} 次，{{syncingSubscriptions ? '正在后台同步，可继续点击增加' : '等待同步，不计入上方已同步次数'}}</view>
+    <button wx:if="{{pendingCount && !syncingSubscriptions}}" class="small-button" bindtap="onRetrySubscriptions" disabled="{{busy || subscribing || !ready}}">同步已同意的订阅记录</button>
+    <view class="explanation">每次点击申请一次。记住选择后，微信可能不再弹窗；只有同意才计数，实际发送以微信许可为准。</view>
+    <view class="button-row"><button class="small-button" bindtap="onTest" disabled="{{busy || subscribing || syncingSubscriptions || syncingSchedule || !ready}}">发送测试</button><button class="small-button" bindtap="onRecords" disabled="{{busy || subscribing || syncingSubscriptions || syncingSchedule || !ready}}">发送记录</button></view>
+  </view>
+  <view class="card">
+    <view class="section-title">课表状态</view>
+    <view class="sync-summary">{{progress || (syncedThrough ? '提醒课表已准备至 ' + syncedThrough : (syncedAtText ? '当前学期暂无未来课程' : '等待准备当前学期课表'))}}</view>
+    <view class="muted" wx:if="{{syncedAtText}}">更新时间：{{syncedAtText}}</view>
+    <view class="muted">已保存 {{lessonCount}} 条排课安排</view>
+    <view class="muted" wx:if="{{planStatus}}">{{planStatus}}</view>
+    <view wx:if="{{syncError}}" class="sync-error">{{syncError}}<text wx:if="{{syncedThrough}}">；当前仍保留上次准备的课表。</text></view>
+    <button wx:if="{{syncError}}" class="small-button" bindtap="retryAutoSync" disabled="{{busy || subscribing || syncingSubscriptions || syncingSchedule}}">重新尝试</button>
+    <view class="explanation">课表未变化时复用已有提醒。查看课表时发现变化会标记更新；进入此页时每隔至少 30 分钟核对一次完整课表，变化后才同步。首次准备完成后开启提醒，主动关闭会保留选择。</view>
+  </view>
+  <view wx:if="{{showRecords}}" class="card">
+    <view class="section-title">最近发送记录</view><view wx:if="{{!records.length}}" class="muted empty-record">暂无记录</view>
+    <view wx:for="{{records}}" wx:key="id" class="record"><view class="record-head"><text>{{item.courseName}}</text><text class="record-state">{{item.statusText}}</text></view><view class="muted">{{item.date}} {{item.startTime}}{{item.kind === 'test' ? ' · 测试' : ''}}</view><view class="muted">{{item.reason}}</view></view>
+  </view>
+  <view class="card tools-card"><view class="section-title">通知设置</view><button class="tool-button" bindtap="onPermissions">检查订阅权限与微信设置　›</button><view class="explanation">预计次数不等于官方余额。拒收、系统权限关闭或云端异常可能影响发送；后台每分钟检查一次，提醒可能略有延迟。</view></view>
+  <view wx:if="{{loading}}" class="loading-text">正在读取提醒状态…</view>
+</view>

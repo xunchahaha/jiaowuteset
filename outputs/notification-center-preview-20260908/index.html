@@ -1,0 +1,124 @@
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>通知中心布局预览（非真机）</title><style>/* Shared campus palette. Semantic success / warning / error colors remain distinct. */
+body {
+  --brand: #376da6;
+  --ink: #24354b;
+  --muted: #69798b;
+  --line: #e4eaf0;
+  --canvas: #f7f9fb;
+  --surface: #ffffff;
+  --td-brand-color: #376da6;
+  --td-brand-color-active: #2a5685;
+  --td-brand-color-light: #edf3fa;
+  --td-brand-color-light-active: #dce8f5;
+  --td-brand-color-disabled: #a6bdd6;
+  --td-text-color-primary: #24354b;
+  --td-text-color-secondary: #69798b;
+  --td-text-color-placeholder: #778696;
+  --td-bg-color-page: #f7f9fb;
+  --td-bg-color-container: #ffffff;
+  --td-component-stroke: #e4eaf0;
+  --td-button-border-radius: 7px;
+  --td-radius-default: 6px;
+  --td-radius-large: 8px;
+  --td-radius-extraLarge: 10px;
+  --td-cell-title-font: 400 14px / 1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --td-cell-description-font: 400 12px / 1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --td-cell-note-font-size: 13px;
+  --td-cell-vertical-padding: 15px;
+  --td-cell-border-color: #e4eaf0;
+  --td-cell-note-color: #536478;
+  --td-input-bg-color: #f7f9fb;
+  --td-input-border-color: #e4eaf0;
+  --td-input-vertical-padding: 13px;
+  --td-input-placeholder-text-color: #778696;
+  --td-search-bg-color: #f0f4f8;
+  --td-tag-success-color: #397560;
+  --td-tag-success-light-color: #eef6f1;
+  --td-notice-bar-border-radius: 6px;
+  --td-notice-bar-warning-color: #806333;
+  --td-notice-bar-warning-bg-color: #faf7f0;
+  background: var(--canvas);
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.container { display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
+button { background: initial; }
+button::after { border: none; }
+.text-center { text-align: center; }
+.text-primary { color: var(--brand); }
+.text-secondary { color: var(--muted); }
+.text-danger { color: #b84c4c; }
+.text-success { color: #397560; }
+.shadow-sm, .shadow-md, .shadow-lg { box-shadow: 0 1px 4px rgba(36, 53, 75, 0.03); }
+.page-intro { padding: 18px 16px 12px; }
+.page-intro-title { font-size: 20px; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.page-intro-desc { margin-top: 5px; color: var(--muted); font-size: 12px; }
+
+.notification-center { padding: 0 14px 18px; padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+.intro { padding: 15px 2px; }
+.title { font-size: 21px; font-weight: 600; color: var(--ink); }
+.subtitle { margin-top: 4px; font-size: 12px; color: var(--muted); }
+.card { background: var(--surface); border: 0.5px solid var(--line); border-radius: 11px; padding: 14px; margin-bottom: 12px; }
+.section-title { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 38px; }
+.setting-row switch { flex-shrink: 0; }
+.muted { color: var(--muted); font-size: 11.5px; line-height: 1.65; }
+.divider { border-top: 0.5px solid var(--line); padding-top: 9px; margin-top: 10px; font-size: 13px; }
+.link { color: var(--brand); }
+.quota-card { text-align: center; }
+.quota { color: var(--brand); font-size: 43px; line-height: 1.4; font-weight: 600; margin: 6px 0; }
+.quota-unit { font-size: 13.5px; color: var(--muted); margin-left: 5px; font-weight: 400; }
+.quota-note { font-size: 10.5px; color: var(--muted); margin-bottom: 12px; }
+.notification-center button { width: 100%; min-height: 38px; height: auto; margin: 0; padding: 7px 10px; border-radius: 7px; font-size: 13px; line-height: 1.6; font-weight: 500; box-sizing: border-box; }
+.notification-center .primary-button { background: var(--brand); color: #fff; }
+.notification-center .secondary-button { background: #edf3fa; color: var(--brand); margin-top: 11px; }
+.explanation { margin-top: 9px; color: var(--muted); font-size: 11px; line-height: 1.65; text-align: left; }
+.button-row { display: flex; gap: 10px; margin-top: 12px; }
+.notification-center .small-button { background: #f7f9fb; border: 0.5px solid var(--line); color: var(--ink); min-height: 33px; font-size: 12px; }
+.sync-summary { margin: 9px 0 4px; font-size: 13.5px; }
+.record { padding: 10px 0; border-bottom: 0.5px solid var(--line); }
+.record:last-child { border-bottom: 0; padding-bottom: 0; }
+.record-head { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+.record-state { flex-shrink: 0; color: var(--brand); font-size: 11px; }
+.empty-record { margin-top: 10px; }
+.notification-center .tool-button { text-align: left; padding: 12px 0 4px; color: var(--brand); font-weight: 400; }
+.notification-center button[disabled] { opacity: .5; }
+.error-card { padding: 12px; margin-bottom: 12px; background: #faf7f0; color: #806333; border-radius: 8px; font-size: 12.5px; }
+.error-card button { margin-top: 9px; }
+.loading-text { color: var(--muted); text-align: center; padding: 10px; font-size: 12px; }
+
+html{background:#e9eef3}body{max-width:375px;margin:0 auto;display:block}button{border:0;font-family:inherit}input.native-switch{appearance:none;width:43px;height:25px;border-radius:20px;background:#dbe3ed;position:relative;flex-shrink:0}input.native-switch:before{content:'';position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:white}.preview-nav{height:45px;display:flex;align-items:center;justify-content:center;background:#f7f9fb;font-size:15px}.preview-label{font-size:10px;text-align:center;color:#7f8b99;padding:4px}</style><body><div class="preview-label">布局预览 · 非真机截图 · 未连接云端</div><div class="preview-nav">通知中心</div><div class="notification-center">
+  <div class="intro"><div class="title">通知中心</div><div class="subtitle">微信服务通知 · 课前提醒</div></div>
+  <div wx:if="" class="error-card"><div></div><button class="small-button" bindtap="refresh">重新连接</button></div>
+  <div class="card settings-card">
+    <div class="setting-row"><div><div class="section-title">课前提醒</div><div class="muted">开启前请先同步课表</div></div><input class="native-switch" type="checkbox" aria-label="课前提醒" /></div>
+    <div range="5,10,15,20,30,45,60" value="4" bindchange="onLeadChange"><div class="setting-row divider"><span>提前提醒时间</span><span class="link">30 分钟　›</span></div></div>
+  </div>
+  <div class="card quota-card">
+    <div class="muted">预计可用通知次数</div>
+    <div class="quota">0<span class="quota-unit">次</span></div>
+    <div class="quota-note">按本应用订阅与发送记录估算 · 记录上限 200</div>
+    <button class="primary-button" bindtap="onAddSubscription">＋ 增加通知次数</button>
+    <div class="explanation">每次点击申请一次。记住选择后，微信可能不再弹窗；只有同意才计数，实际发送以微信许可为准。</div>
+    <div class="button-row"><button class="small-button" bindtap="onTest">发送测试</button><button class="small-button" bindtap="onRecords">发送记录</button></div>
+  </div>
+  <div class="card">
+    <div class="section-title">提醒课表</div>
+    <div class="sync-summary">尚未同步课表</div>
+    <div class="muted" wx:if="">同步时间：</div>
+    <div class="muted">已保存 0 次未来上课安排</div>
+    <button class="secondary-button" bindtap="onSyncSchedule">同步当前学期课表</button>
+    <div class="explanation">仅同步课程、时间、老师和地点，不上传教务密码或登录令牌。同步后的提醒在云端执行，退出小程序仍可提醒。调课、换账号或换学期后请重新同步。</div>
+  </div>
+  <div wx:if="false" class="card">
+    <div class="section-title">最近发送记录</div><div wx:if="true" class="muted empty-record">暂无记录</div>
+    <div wx:for="" wx:key="id" class="record"><div class="record-head"><span></span><span class="record-state"></span></div><div class="muted"> </div><div class="muted"></div></div>
+  </div>
+  <div class="card tools-card"><div class="section-title">通知设置</div><button class="tool-button" bindtap="onPermissions">检查订阅权限与微信设置　›</button><div class="explanation">预计次数不等于官方余额。拒收、系统权限关闭或云端异常可能影响发送；后台每分钟检查一次，提醒可能略有延迟。</div></div>
+  <div wx:if="false" class="loading-text">正在读取提醒状态…</div>
+</div>
+<script>document.querySelectorAll('[wx\:if]').forEach(n=>{if(n.getAttribute('wx:if')!=='true'&&n.getAttribute('wx:if')!=='1')n.remove()});document.querySelectorAll('[wx\:for]').forEach(n=>n.remove());</script></body></html>
