@@ -107,8 +107,6 @@
       <t-empty icon="info-circle" description="这个账号下没有进行中的课程" />
     </view>
 
-    <view wx:if="{{blockedCount}}" class="blocked-note">有 {{blockedCount}} 门课读出来不用刷（没有章节或已全部完成），放在最后、不能选。同名的课注意看章节数，别选成空壳课。</view>
-
     <view wx:for="{{courses}}" wx:key="key"
           class="course {{item.blockedText ? 'blocked' : (selected[item.key] ? 'on' : '')}}" data-key="{{item.key}}" bind:tap="onToggleCourse">
       <view class="check {{selected[item.key] && !item.blockedText ? 'on' : ''}}">
@@ -120,7 +118,7 @@
           <text>{{item.teacher || '未知教师'}}</text>
           <text wx:if="{{item.chapterCount}}"> · {{item.chapterCount}} 个章节</text>
         </view>
-        <view wx:if="{{item.blockedText}}" class="tag tone-muted course-tag">{{item.blockedText}}</view>
+        <view wx:if="{{item.blockedTag}}" class="tag tone-muted course-tag">{{item.blockedTag}}</view>
         <view wx:elif="{{item.needUnlock}}" class="tag tone-warn course-tag">有答题解锁章节，需开自动答题</view>
       </view>
     </view>

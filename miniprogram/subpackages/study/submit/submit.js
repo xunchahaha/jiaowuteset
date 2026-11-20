@@ -30,12 +30,16 @@ function scanErrorMessage(err) {
  * 只认本次读取到的数据（scanState=ok）；恢复草稿、老服务器没有这些字段时一律可选。
  */
 function blockReason(c) {
-  if (!c || c.scanState !== 'ok') return '';
+  if (!c || c.scanState !== 'ok') return null;
   const jobs = Number(c.jobCount);
-  if (c.jobCount != null && jobs === 0) return '平台上这门课没有章节，可能是空壳课或老师还没发布，不用刷';
+  if (c.jobCount != null && jobs === 0) {
+    return { tag: '没有章节', text: '平台上这门课没有章节，可能是空壳课或老师还没发布' };
+  }
   const finished = Number(c.finishedCount);
-  if (jobs > 0 && c.finishedCount != null && finished >= jobs) return '章节已全部完成，不用再刷';
-  return '';
+  if (jobs > 0 && c.finishedCount != null && finished >= jobs) {
+    return { tag: '已全部完成', text: '这门课的章节已全部完成，不用再刷' };
+  }
+  return null;
 }
 
 Page(withPageShare({
@@ -66,7 +70,6 @@ Page(withPageShare({
     selected: {},
     selectedCount: 0,
     allSelected: false,
-    blockedCount: 0,
     unlockSelected: 0,
 
     // 邀请助力（配置与进度都来自云端 inviteStatus；活动关着时 invite 为 null，入口和弹窗都不出）
@@ -271,16 +274,20 @@ Page(withPageShare({
 
   // ---------- 选课 ----------
   applyCourses(list, selected) {
-    const courses = (list || []).map(c => ({
-      key: c.courseId + '|' + c.clazzId,
-      courseId: String(c.courseId),
-      clazzId: String(c.clazzId),
-      title: c.title || '未命名课程',
-      teacher: c.teacher || '',
-      needUnlock: !!c.needUnlock,
-      chapterCount: c.jobCount || 0,
-      blockedText: blockReason(c)
-    }));
+    const courses = (list || []).map(c => {
+      const block = blockReason(c);
+      return {
+        key: c.courseId + '|' + c.clazzId,
+        courseId: String(c.courseId),
+        clazzId: String(c.clazzId),
+        title: c.title || '未命名课程',
+        teacher: c.teacher || '',
+        needUnlock: !!c.needUnlock,
+        chapterCount: c.jobCount || 0,
+        blockedTag: block ? block.tag : '',
+        blockedText: block ? block.text : ''
+      };
+    });
     // 不用刷的课沉到最后，其余保持平台顺序
     const usable = courses.filter(c => !c.blockedText);
     const blocked = courses.filter(c => c.blockedText);
@@ -289,7 +296,6 @@ Page(withPageShare({
     this.setData({
       scanned: true,
       courses: usable.concat(blocked),
-      blockedCount: blocked.length,
       selected: picked
     });
     this.recount();

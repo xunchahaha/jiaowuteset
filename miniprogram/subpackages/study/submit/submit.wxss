@@ -119,19 +119,12 @@
 .course-main { flex: 1; min-width: 0; }
 .course-title { font-size: 28rpx; color: var(--ink); font-weight: 500; line-height: 1.45; }
 .course-meta { font-size: 23rpx; color: var(--muted); margin-top: 6rpx; }
-.course-tag { margin-top: 12rpx; white-space: normal; line-height: 1.5; }
+.course-tag { margin-top: 12rpx; }
 
 /* 不用刷的课（0 章节 / 已全部完成）：置灰、不能选 */
 .course.blocked { background: var(--soft); border-style: dashed; }
 .course.blocked .course-title { color: var(--muted); }
 .course.blocked .check { border-color: var(--line); background: var(--soft); }
-
-.blocked-note {
-  font-size: 23rpx;
-  color: var(--muted);
-  line-height: 1.6;
-  margin: 0 4rpx 16rpx;
-}
 
 /* ---------- 邀请助力弹窗 ---------- */
 .ipop-mask {

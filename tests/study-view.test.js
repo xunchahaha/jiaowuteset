@@ -62,7 +62,7 @@ test('记录：用课程名而不是 taskId', () => {
   assert.equal(r.active, false);
 });
 
-test('无需刷的课（0 章节 / 早已完成）：课上标「无需刷」，本单消耗不算它们', () => {
+test('无需刷的课（0 章节 / 早已完成）：标签直接写原因，本单消耗不算它们', () => {
   const t = view.decorateTask({ status: 'done', totalCourses: 3, doneCourses: 3, skippedCourses: 2,
     useTiku: false, courses: [
       { courseId: '1', clazzId: '9', title: '26级高等数学I（A）', status: 'done', total: 0, done: 0,
@@ -74,13 +74,12 @@ test('无需刷的课（0 章节 / 早已完成）：课上标「无需刷」，
   assert.equal(t.costText, '本单消耗 1 次');
   assert.equal(t.subline, '1 门课已刷完，2 门不用刷（不扣次数）');
   const byTitle = Object.fromEntries(t.courses.map(c => [c.title, c]));
-  assert.equal(byTitle['26级高等数学I（A）'].statusText, '无需刷');
+  assert.equal(byTitle['26级高等数学I（A）'].statusText, '没有章节');
   assert.equal(byTitle['26级高等数学I（A）'].tone, 'muted');
-  assert.equal(byTitle['26级高等数学I（A）'].progressText, '0 个章节');
-  assert.match(byTitle['26级高等数学I（A）'].note, /没有章节/);
-  assert.equal(byTitle['军事理论'].statusText, '无需刷');
+  assert.equal(byTitle['军事理论'].statusText, '早已完成');
+  assert.equal(byTitle['军事理论'].skipped, true);
   assert.equal(byTitle['数据结构'].statusText, '已完成');
-  assert.equal(byTitle['数据结构'].note, '');
+  assert.equal(byTitle['数据结构'].skipped, false);
 });
 
 test('无需刷：全部都不用刷 → 未扣次数，文案说明原因', () => {

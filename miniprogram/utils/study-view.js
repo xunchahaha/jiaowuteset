@@ -78,12 +78,15 @@ function decorateActive(a, idx) {
   return out;
 }
 
-/** 「无需刷」的课（0 章节 / 提交时已全部完成）：引擎记 done + skipped，不扣次数 */
-const SKIPPED_STATUS = { text: '无需刷', tone: 'muted' };
+/** 「无需刷」的课：引擎记 done + skipped，不扣次数；标签直接写原因 */
+const SKIPPED_STATUS = {
+  empty: { text: '没有章节', tone: 'muted' },
+  complete: { text: '早已完成', tone: 'muted' }
+};
 
 function decorateCourse(c) {
   const skipped = !!c.skipped && c.status === 'done';
-  const st = skipped ? SKIPPED_STATUS : courseStatus(c.status);
+  const st = skipped ? (SKIPPED_STATUS[c.skipReason] || SKIPPED_STATUS.complete) : courseStatus(c.status);
   let actives = (Array.isArray(c.actives) ? c.actives : []).map(decorateActive);
   // 旧报文没有 actives：用单值视频字段 / 当前章节退化出一条
   if (!actives.length && c.status === 'running') {
@@ -106,8 +109,7 @@ function decorateCourse(c) {
     statusText: st.text,
     tone: st.tone,
     percent: c.status === 'done' ? 100 : clampPercent(c.percent != null ? c.percent : (total ? done * 100 / total : 0)),
-    progressText: total ? done + '/' + total + ' 章' : (skipped ? '0 个章节' : ''),
-    note: skipped ? (c.skipText || '这门课没有要刷的内容，不扣次数') : '',
+    progressText: total ? done + '/' + total + ' 章' : '',
     answered: !!c.answered,
     actives: actives.slice(0, MAX_ACTIVES),
     activesMore: Math.max(0, actives.length - MAX_ACTIVES),

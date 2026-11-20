@@ -141,12 +141,11 @@ test('选课页：0 章节的空壳课、章节已全部完成的课不能选，
 
   assert.deepEqual(page.data.courses.map(c => c.title),
     ['26级高等数学I', '读失败的课', '老服务器', '26级高等数学I（A）', '军事理论']);
-  assert.equal(page.data.blockedCount, 2);
   const byTitle = Object.fromEntries(page.data.courses.map(c => [c.title, c]));
-  assert.match(byTitle['26级高等数学I（A）'].blockedText, /没有章节/);
-  assert.match(byTitle['军事理论'].blockedText, /全部完成/);
-  assert.equal(byTitle['读失败的课'].blockedText, '', '没读成功的不能当成 0 章节');
-  assert.equal(byTitle['老服务器'].blockedText, '');
+  assert.equal(byTitle['26级高等数学I（A）'].blockedTag, '没有章节');
+  assert.equal(byTitle['军事理论'].blockedTag, '已全部完成');
+  assert.equal(byTitle['读失败的课'].blockedTag, '', '没读成功的不能当成 0 章节');
+  assert.equal(byTitle['老服务器'].blockedTag, '');
 
   page.onToggleCourse({ currentTarget: { dataset: { key: '1|9' } } });
   assert.equal(page.data.selectedCount, 0);
