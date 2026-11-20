@@ -71,6 +71,7 @@
       <view wx:if="{{c.activesMore}}" class="act-more">还有 {{c.activesMore}} 个章节同时在刷</view>
 
       <view wx:if="{{c.answered && t.useTiku}}" class="course-note">已自动答题</view>
+      <view wx:if="{{c.note}}" class="course-note">{{c.note}}</view>
       <view wx:if="{{c.error}}" class="course-error">{{c.error}}</view>
     </view>
   </block>

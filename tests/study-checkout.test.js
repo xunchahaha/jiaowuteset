@@ -92,8 +92,12 @@ test('结算：手动选档优先；没有可买商品 → blocked', () => {
 });
 
 test('任务消耗：开答题才计答题部分', () => {
-  assert.deepEqual(study.taskCost({ doneCourses: 3, answeredDoneCourses: 2, useTiku: true }), { total: 5, done: 3, answered: 2 });
+  assert.deepEqual(study.taskCost({ doneCourses: 3, answeredDoneCourses: 2, useTiku: true }), { total: 5, done: 3, answered: 2, skipped: 0 });
   assert.equal(study.taskCost({ doneCourses: 3, answeredDoneCourses: 2, useTiku: false }).total, 3);
+  // 无需刷的课不扣（与云函数 courseUnits 一致）
+  assert.deepEqual(study.taskCost({ doneCourses: 3, skippedCourses: 1, answeredDoneCourses: 1, useTiku: true }),
+    { total: 3, done: 2, answered: 1, skipped: 1 });
+  assert.equal(study.taskCost({ doneCourses: 1, skippedCourses: 4 }).total, 0);
 });
 
 test('格式化', () => {

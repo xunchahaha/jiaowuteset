@@ -276,11 +276,18 @@ function checkoutPlan(input) {
   return plan;
 }
 
-/** 已结束任务实际消耗的次数（与云函数结算口径一致） */
+/**
+ * 已结束任务实际消耗的次数（与云函数 logic.courseUnits 口径一致）：
+ * doneCourses 里「无需刷」的课（skippedCourses：0 章节 / 提交时已全部完成）不扣；
+ * 开了自动答题时，真正答过题的课再加 1。
+ */
 function taskCost(t) {
-  const done = Number((t && t.doneCourses) || 0);
-  const answered = t && t.useTiku ? Number(t.answeredDoneCourses || 0) : 0;
-  return { total: done + answered, done, answered };
+  const n = v => Math.max(0, Math.floor(Number(v) || 0));
+  const all = n(t && t.doneCourses);
+  const skipped = Math.min(all, n(t && t.skippedCourses));
+  const done = all - skipped;
+  const answered = t && t.useTiku ? Math.min(done, n(t.answeredDoneCourses)) : 0;
+  return { total: done + answered, done, answered, skipped };
 }
 
 module.exports = {

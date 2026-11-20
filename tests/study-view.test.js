@@ -61,3 +61,40 @@ test('记录：用课程名而不是 taskId', () => {
   assert.equal(r.costText, '消耗 3 次');
   assert.equal(r.active, false);
 });
+
+test('无需刷的课（0 章节 / 早已完成）：课上标「无需刷」，本单消耗不算它们', () => {
+  const t = view.decorateTask({ status: 'done', totalCourses: 3, doneCourses: 3, skippedCourses: 2,
+    useTiku: false, courses: [
+      { courseId: '1', clazzId: '9', title: '26级高等数学I（A）', status: 'done', total: 0, done: 0,
+        skipped: true, skipReason: 'empty', skipText: '平台上这门课没有章节（可能是空壳课或老师还没发布），没刷、不扣次数' },
+      { courseId: '2', clazzId: '9', title: '军事理论', status: 'done', total: 45, done: 45,
+        skipped: true, skipReason: 'complete', skipText: '这门课的任务点在提交前就已全部完成，没有要刷的，不扣次数' },
+      { courseId: '3', clazzId: '9', title: '数据结构', status: 'done', total: 10, done: 10, skipped: false }
+    ] });
+  assert.equal(t.costText, '本单消耗 1 次');
+  assert.equal(t.subline, '1 门课已刷完，2 门不用刷（不扣次数）');
+  const byTitle = Object.fromEntries(t.courses.map(c => [c.title, c]));
+  assert.equal(byTitle['26级高等数学I（A）'].statusText, '无需刷');
+  assert.equal(byTitle['26级高等数学I（A）'].tone, 'muted');
+  assert.equal(byTitle['26级高等数学I（A）'].progressText, '0 个章节');
+  assert.match(byTitle['26级高等数学I（A）'].note, /没有章节/);
+  assert.equal(byTitle['军事理论'].statusText, '无需刷');
+  assert.equal(byTitle['数据结构'].statusText, '已完成');
+  assert.equal(byTitle['数据结构'].note, '');
+});
+
+test('无需刷：全部都不用刷 → 未扣次数，文案说明原因', () => {
+  const t = view.decorateTask({ status: 'done', totalCourses: 2, doneCourses: 2, skippedCourses: 2, courses: [] });
+  assert.equal(t.costText, '本单未消耗次数');
+  assert.match(t.subline, /都不用刷/);
+  const r = view.decorateRecord({ taskId: 't_2', status: 'done', totalCourses: 2, doneCourses: 2,
+    skippedCourses: 2, titles: ['车辆工程专业概论', '26级高等数学I（A）'], createdAt: Date.now() });
+  assert.equal(r.costText, '未扣次数');
+});
+
+test('老报文没有 skipped 字段：照旧显示已完成、按 doneCourses 算消耗', () => {
+  const t = view.decorateTask({ status: 'done', totalCourses: 1, doneCourses: 1,
+    courses: [{ courseId: '1', title: 'A', status: 'done', total: 0, done: 0 }] });
+  assert.equal(t.courses[0].statusText, '已完成');
+  assert.equal(t.costText, '本单消耗 1 次');
+});

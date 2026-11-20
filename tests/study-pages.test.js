@@ -121,6 +121,46 @@ test('选课页：读取课程 → 勾选 → 下一步把密码走内存通道�
   page.onUnload();
 });
 
+test('选课页：0 章节的空壳课、章节已全部完成的课不能选，放最后（全选也不带上）', async () => {
+  const wx = makeWx({ 'study:account:u1': { username: '13800000000', password: 'pw', remember: true } });
+  const task = baseTask({
+    scanCourses: async () => ({ courses: [
+      { courseId: '1', clazzId: '9', title: '26级高等数学I（A）', jobCount: 0, finishedCount: 0, scanState: 'ok' },
+      { courseId: '2', clazzId: '9', title: '26级高等数学I', jobCount: 30, finishedCount: 3, scanState: 'ok' },
+      { courseId: '3', clazzId: '9', title: '军事理论', jobCount: 45, finishedCount: 45, scanState: 'ok' },
+      { courseId: '4', clazzId: '9', title: '读失败的课', jobCount: 0, scanState: 'error' },
+      { courseId: '5', clazzId: '9', title: '老服务器', jobCount: 8 }
+    ] })
+  });
+  const page = loadPage('subpackages/study/submit/submit.js', { wx, task, payment: basePayment() });
+  page.onLoad(); page.onShow();
+  await flush();
+  page.onScan();
+  await flush();
+  page.stopScanTimer();
+
+  assert.deepEqual(page.data.courses.map(c => c.title),
+    ['26级高等数学I', '读失败的课', '老服务器', '26级高等数学I（A）', '军事理论']);
+  assert.equal(page.data.blockedCount, 2);
+  const byTitle = Object.fromEntries(page.data.courses.map(c => [c.title, c]));
+  assert.match(byTitle['26级高等数学I（A）'].blockedText, /没有章节/);
+  assert.match(byTitle['军事理论'].blockedText, /全部完成/);
+  assert.equal(byTitle['读失败的课'].blockedText, '', '没读成功的不能当成 0 章节');
+  assert.equal(byTitle['老服务器'].blockedText, '');
+
+  page.onToggleCourse({ currentTarget: { dataset: { key: '1|9' } } });
+  assert.equal(page.data.selectedCount, 0);
+  assert.match(wx.calls.toast[wx.calls.toast.length - 1], /没有章节/);
+
+  page.onToggleAll();
+  assert.equal(page.data.selectedCount, 3);
+  assert.equal(page.data.allSelected, true);
+  page.onNext();
+  const [, payload] = wx.calls.emitted[0];
+  assert.deepEqual(payload.courses.map(c => c.courseId), ['2', '4', '5']);
+  page.onUnload();
+});
+
 test('没登录教务也能刷课：不跳登录页，本机数据存游客作用域', async () => {
   const storage = {};
   const wx = makeWx(storage, null);

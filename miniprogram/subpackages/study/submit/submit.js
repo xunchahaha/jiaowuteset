@@ -23,6 +23,21 @@ function scanErrorMessage(err) {
   return msg || '读取课程失败，请重试';
 }
 
+/**
+ * 读出来就不用刷的课，不让选（引擎即使收到也会记「无需刷」不扣次数，但同名空壳课容易选错真课）：
+ * - 平台上 0 个章节：空壳课 / 老师还没发布（例：「26级高等数学I（A）」是空壳，真课是「26级高等数学I」）
+ * - 章节全部已完成
+ * 只认本次读取到的数据（scanState=ok）；恢复草稿、老服务器没有这些字段时一律可选。
+ */
+function blockReason(c) {
+  if (!c || c.scanState !== 'ok') return '';
+  const jobs = Number(c.jobCount);
+  if (c.jobCount != null && jobs === 0) return '平台上这门课没有章节，可能是空壳课或老师还没发布，不用刷';
+  const finished = Number(c.finishedCount);
+  if (jobs > 0 && c.finishedCount != null && finished >= jobs) return '章节已全部完成，不用再刷';
+  return '';
+}
+
 Page(withPageShare({
   data: {
     orderOpen: study.isOrderOpen(),
@@ -51,6 +66,7 @@ Page(withPageShare({
     selected: {},
     selectedCount: 0,
     allSelected: false,
+    blockedCount: 0,
     unlockSelected: 0,
 
     // 邀请助力（配置与进度都来自云端 inviteStatus；活动关着时 invite 为 null，入口和弹窗都不出）
@@ -255,24 +271,37 @@ Page(withPageShare({
 
   // ---------- 选课 ----------
   applyCourses(list, selected) {
+    const courses = (list || []).map(c => ({
+      key: c.courseId + '|' + c.clazzId,
+      courseId: String(c.courseId),
+      clazzId: String(c.clazzId),
+      title: c.title || '未命名课程',
+      teacher: c.teacher || '',
+      needUnlock: !!c.needUnlock,
+      chapterCount: c.jobCount || 0,
+      blockedText: blockReason(c)
+    }));
+    // 不用刷的课沉到最后，其余保持平台顺序
+    const usable = courses.filter(c => !c.blockedText);
+    const blocked = courses.filter(c => c.blockedText);
+    const picked = Object.assign({}, selected || {});
+    blocked.forEach(c => { delete picked[c.key]; });
     this.setData({
       scanned: true,
-      courses: (list || []).map(c => ({
-        key: c.courseId + '|' + c.clazzId,
-        courseId: String(c.courseId),
-        clazzId: String(c.clazzId),
-        title: c.title || '未命名课程',
-        teacher: c.teacher || '',
-        needUnlock: !!c.needUnlock,
-        chapterCount: c.jobCount || 0
-      })),
-      selected: selected || {}
+      courses: usable.concat(blocked),
+      blockedCount: blocked.length,
+      selected: picked
     });
     this.recount();
   },
 
   onToggleCourse(e) {
     const key = e.currentTarget.dataset.key;
+    const course = this.data.courses.find(c => c.key === key);
+    if (course && course.blockedText) {
+      wx.showToast({ title: course.blockedText, icon: 'none' });
+      return;
+    }
     const selected = Object.assign({}, this.data.selected);
     if (selected[key]) delete selected[key]; else selected[key] = true;
     this.setData({ selected });
@@ -281,16 +310,17 @@ Page(withPageShare({
 
   onToggleAll() {
     const selected = {};
-    if (!this.data.allSelected) this.data.courses.forEach(c => { selected[c.key] = true; });
+    if (!this.data.allSelected) this.data.courses.forEach(c => { if (!c.blockedText) selected[c.key] = true; });
     this.setData({ selected });
     this.recount();
   },
 
   recount() {
-    const picked = this.data.courses.filter(c => this.data.selected[c.key]);
+    const picked = this.data.courses.filter(c => this.data.selected[c.key] && !c.blockedText);
+    const usable = this.data.courses.filter(c => !c.blockedText).length;
     this.setData({
       selectedCount: picked.length,
-      allSelected: picked.length > 0 && picked.length === this.data.courses.length,
+      allSelected: picked.length > 0 && picked.length === usable,
       unlockSelected: picked.filter(c => c.needUnlock).length
     });
   },
@@ -298,7 +328,7 @@ Page(withPageShare({
   // ---------- 下一步 ----------
   onNext() {
     if (!study.isOrderOpen()) return;
-    const picked = this.data.courses.filter(c => this.data.selected[c.key]);
+    const picked = this.data.courses.filter(c => this.data.selected[c.key] && !c.blockedText);
     if (!picked.length) return;
     if (picked.length > task.config.maxCoursesPerTask) {
       wx.showToast({ title: '单次最多 ' + task.config.maxCoursesPerTask + ' 门课', icon: 'none' });

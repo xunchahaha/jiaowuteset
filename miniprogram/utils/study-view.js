@@ -78,8 +78,12 @@ function decorateActive(a, idx) {
   return out;
 }
 
+/** 「无需刷」的课（0 章节 / 提交时已全部完成）：引擎记 done + skipped，不扣次数 */
+const SKIPPED_STATUS = { text: '无需刷', tone: 'muted' };
+
 function decorateCourse(c) {
-  const st = courseStatus(c.status);
+  const skipped = !!c.skipped && c.status === 'done';
+  const st = skipped ? SKIPPED_STATUS : courseStatus(c.status);
   let actives = (Array.isArray(c.actives) ? c.actives : []).map(decorateActive);
   // 旧报文没有 actives：用单值视频字段 / 当前章节退化出一条
   if (!actives.length && c.status === 'running') {
@@ -98,10 +102,12 @@ function decorateCourse(c) {
     title: c.title || '未命名课程',
     teacher: c.teacher || '',
     status: c.status,
+    skipped,
     statusText: st.text,
     tone: st.tone,
     percent: c.status === 'done' ? 100 : clampPercent(c.percent != null ? c.percent : (total ? done * 100 / total : 0)),
-    progressText: total ? done + '/' + total + ' 章' : '',
+    progressText: total ? done + '/' + total + ' 章' : (skipped ? '0 个章节' : ''),
+    note: skipped ? (c.skipText || '这门课没有要刷的内容，不扣次数') : '',
     answered: !!c.answered,
     actives: actives.slice(0, MAX_ACTIVES),
     activesMore: Math.max(0, actives.length - MAX_ACTIVES),
@@ -122,6 +128,11 @@ function decorateTask(p) {
   const done = Number(payload.doneCourses) || 0;
   const failed = Number(payload.failedCourses) || 0;
   const running = courses.filter(c => c.status === 'running').length;
+  const cost = study.taskCost({
+    doneCourses: done, skippedCourses: payload.skippedCourses,
+    answeredDoneCourses: payload.answeredDoneCourses, useTiku: payload.useTiku
+  });
+  const skippedText = cost.skipped ? '，' + cost.skipped + ' 门不用刷（不扣次数）' : '';
 
   let headline = st.text;
   let subline = '';
@@ -133,10 +144,13 @@ function decorateTask(p) {
     subline = '已完成 ' + done + '/' + total + ' 门' + (running > 1 ? ' · ' + running + ' 门同时在刷' : '');
   } else if (status === 'done') {
     headline = '全部完成';
-    subline = total + ' 门课已刷完';
+    subline = cost.skipped
+      ? (cost.skipped >= total ? '选的课都不用刷（没有章节或早已完成），未扣次数'
+        : (total - cost.skipped) + ' 门课已刷完' + skippedText)
+      : total + ' 门课已刷完';
   } else if (status === 'failed') {
     headline = done ? '部分课程失败' : '刷课失败';
-    subline = payload.error || ('完成 ' + done + ' 门，失败 ' + failed + ' 门（失败的不扣次数）');
+    subline = payload.error || ('完成 ' + done + ' 门，失败 ' + failed + ' 门（失败的不扣次数）' + skippedText);
   } else if (status === 'cancelled') {
     headline = '已取消';
     subline = done ? '取消前已完成 ' + done + ' 门' : '未完成的课程不扣次数';
@@ -146,7 +160,6 @@ function decorateTask(p) {
   }
 
   const terminal = isTerminal(status);
-  const cost = study.taskCost({ doneCourses: done, answeredDoneCourses: payload.answeredDoneCourses, useTiku: payload.useTiku });
   return {
     status,
     statusText: st.text,
