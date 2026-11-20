@@ -7,6 +7,9 @@ agent-workspace/
 # 本地开发配置
 .claude/
 project.private.config.json
+# 给 Claude 的项目说明（含服务器地址、后端结构），只留本机
+/CLAUDE.md
+/CLAUDE.local.md
 
 # 后端（云函数）不开源，在 cloudfunctions/ 里单独的私有仓库维护
 /cloudfunctions/
